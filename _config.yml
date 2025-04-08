@@ -1,6 +1,8 @@
 # Setup
 title: 'the missing semester of your cs education'
-url: https://missing-semester-cn.github.io
+url: "https://zhangzhehua66.github.io"
+baseurl: "/fork.github.io"   # ✅ 这一行是关键！
+
 solution_url: missing-notes-and-solutions/2020/solutions/
 # Settings
 markdown: kramdown

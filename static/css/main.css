@@ -1,6 +1,7 @@
 /* Copyright (c) 2017 Anish Athalye */
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Noto+Serif+SC:wght@200..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @font-face {
   font-family: "LXGWNeoXiHei";
@@ -19,7 +20,7 @@
 html {
   /*  font-size: 14px;
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-  font-family: "LXGWNeoXiHei", "Source Sans Pro", sans-serif;
+  font-family: "Noto Serif SC", "LXGWNeoXiHei", "Source Sans Pro", sans-serif;
   font-size: 14pt;
   line-height: 1.5;
 }
@@ -244,7 +245,7 @@ hr {
 #nav-bg {
   margin: 0;
   padding: 0.25rem 1rem;
-  font-family: "LXGWNeoXiHei", "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
+  font-family: "Noto Serif SC", "LXGWNeoXiHei", "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
   background: #54008c;
   color: #fff;
 }

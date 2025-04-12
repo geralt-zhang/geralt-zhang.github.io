@@ -21,14 +21,14 @@ html {
   /*  font-size: 14px;
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
   font-family: "Noto Serif SC", "LXGWNeoXiHei", "Source Sans Pro", sans-serif;
-  font-size: 14pt;
+  font-size: 16pt;
   line-height: 1.5;
 }
 
 @media(min-width: 480px) {
   html {
     /*font-size: 16px;*/
-    font-size: 14pt;
+    font-size: 16pt;
   }
 }
 
@@ -124,8 +124,8 @@ code {
   background-color: rgba(27, 31, 35, .05);
   border-radius: 3px;
   padding: 0 0.2rem;
-  /*font-size: 0.9em;*/
-  font-size: 12pt;
+  font-size: 0.9em;
+  /* font-size: 12pt; */
 }
 
 pre {
@@ -133,8 +133,8 @@ pre {
   margin: 1rem;
   padding: 0.5rem 0.7rem;
   border: 1px dashed #444;
-  /*font-size: .8rem;*/
-  font-size: 11pt;
+  font-size: .8rem;
+  /* font-size: 14pt; */
   overflow-x: auto;
 }
 
@@ -231,7 +231,7 @@ hr {
 /* Elements */
 
 #content {
-  max-width: 35rem;
+  max-width: 45rem;
   margin: auto;
   margin-bottom: 2rem;
   padding: 1rem 1rem 0 1rem;

@@ -23,7 +23,7 @@ Sign up for the IAP 2020 class by filling out this [registration form](https://f
 # 日程 <span style="float:right"><img src = "https://img.shields.io/badge/文档同步时间-2021--04--24-blue"></span>
 
 <ul>
-{% assign lectures = site['2025'] | sort: 'date' %}
+{% assign lectures = site['2020'] | sort: 'date' %}
 {% for lecture in lectures %}
     {% if lecture.phony != true and lecture.solution !=true  %}
         <li>

@@ -2,6 +2,11 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
 
+@font-face {
+  font-family: "LXGWNeoXiHei";
+  src: url("static/fonts/LXGWNeoXiHei.ttf") format("truetype");
+}
+
 /* Basic styling */
 
 * {
@@ -12,9 +17,9 @@
 }
 
 html {
-/*  font-size: 14px;
+  /*  font-size: 14px;
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "LXGWNeoXiHei", "Source Sans Pro", sans-serif;
   font-size: 14pt;
   line-height: 1.5;
 }
@@ -33,7 +38,12 @@ body {
   overflow-y: scroll;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-bottom: 1rem;
   font-weight: bold;
   /*text-decoration: underline;*/
@@ -73,7 +83,7 @@ ol {
   margin-left: 1rem;
 }
 
-li > ul {
+li>ul {
   padding-left: 2rem;
 }
 
@@ -81,16 +91,21 @@ ul li {
   list-style-type: none;
 }
 
-ul, ol {
+ul,
+ol {
   margin-bottom: 1rem;
 }
 
-ul ul, ol ul, ul ol, ol ol {
+ul ul,
+ol ul,
+ul ol,
+ol ol {
   margin-bottom: inherit;
 }
 
 ul li:before {
-  content: "\2013  "; /* note: extra space needed because first is consumed by css parser */
+  content: "\2013  ";
+  /* note: extra space needed because first is consumed by css parser */
   position: absolute;
   margin-left: -1rem;
 }
@@ -99,12 +114,13 @@ ul.double-spaced li {
   margin-top: 1rem;
 }
 
-pre, code {
+pre,
+code {
   font-family: "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
 }
 
 code {
-  background-color: rgba(27,31,35,.05);
+  background-color: rgba(27, 31, 35, .05);
   border-radius: 3px;
   padding: 0 0.2rem;
   /*font-size: 0.9em;*/
@@ -138,7 +154,8 @@ a:hover {
   background-color: #54008c;
 }
 
-img, video {
+img,
+video {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -265,8 +282,8 @@ a:hover#logo {
   display: none;
 }
 
-input[type=checkbox]:checked ~ .trigger {
-  display:block;
+input[type=checkbox]:checked~.trigger {
+  display: block;
   margin: auto;
 }
 
@@ -274,11 +291,11 @@ input[type=checkbox]:checked ~ .trigger {
   font-family: "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
 }
 
-input[type=checkbox] ~ .menu-label:after {
+input[type=checkbox]~.menu-label:after {
   content: "(+)";
 }
 
-input[type=checkbox]:checked ~ .menu-label:after {
+input[type=checkbox]:checked~.menu-label:after {
   content: "(-)";
 }
 
@@ -323,53 +340,103 @@ input[type=checkbox]:checked ~ .menu-label:after {
 
 @media (prefers-color-scheme: dark) {
 
-    body {
-        background-color: #303030;
-        color: #ddd
-    }
+  body {
+    background-color: #303030;
+    color: #ddd
+  }
 
-    a {
-      color: #66D9EF;
-      /*color: #A6E22E;*/
-      text-decoration: none;
-    }
+  a {
+    color: #66D9EF;
+    /*color: #A6E22E;*/
+    text-decoration: none;
+  }
 
-    a:hover {
-      color: #000;
-      background-color: #66D9EF;
-      text-decoration: none;
-    }
+  a:hover {
+    color: #000;
+    background-color: #66D9EF;
+    text-decoration: none;
+  }
 
-    h1, h2, h3, h4, h5, h6 {
-        color: #eee;
-      }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #eee;
+  }
 
-    #nav-bg, a#logo, #top-nav a {
-      background-color: #A6E22E;
-      color: #202020;
-    }
+  #nav-bg,
+  a#logo,
+  #top-nav a {
+    background-color: #A6E22E;
+    color: #202020;
+  }
 
-    a:hover > code  {
-        background-color: #66D9EF;
-    }
+  a:hover>code {
+    background-color: #66D9EF;
+  }
 
-    .accent {
-        color: #F92672;
-    }
+  .accent {
+    color: #F92672;
+  }
 }
 
 @media print {
-  #nav-bg, #logo, #top-nav { display: none; }
-  h1.title ~ p.center.gap.accent { display: none; }
-  .youtube-wrapper { display: none; }
-  html { font-size: 1em; font-family: sans-serif; }
-  body { background: none; }
-  #content { max-width: none; }
-  h1.title { text-align: center; }
-  h1, h2, h3, h4, h5, h6 { break-after: avoid-page; page-break-after: avoid; }
-  #content hr:last-of-type { display: none; }
-  #content pre { break-inside: avoid-page; page-break-inside: avoid; }
-  #content div.small:last-of-type { display: none; }
+
+  #nav-bg,
+  #logo,
+  #top-nav {
+    display: none;
+  }
+
+  h1.title~p.center.gap.accent {
+    display: none;
+  }
+
+  .youtube-wrapper {
+    display: none;
+  }
+
+  html {
+    font-size: 1em;
+    font-family: sans-serif;
+  }
+
+  body {
+    background: none;
+  }
+
+  #content {
+    max-width: none;
+  }
+
+  h1.title {
+    text-align: center;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  #content hr:last-of-type {
+    display: none;
+  }
+
+  #content pre {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  #content div.small:last-of-type {
+    display: none;
+  }
 }
 
 .ribbon {
@@ -382,16 +449,17 @@ input[type=checkbox]:checked ~ .menu-label:after {
   top: 40px;
   /* 45 deg ccw rotation */
   -webkit-transform: rotate(45deg);
-     -moz-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-       -o-transform: rotate(45deg);
-          transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
   /* shadow */
   -webkit-box-shadow: 0 0 10px #888;
-     -moz-box-shadow: 0 0 10px #888;
-          /* box-shadow: 0 0 10px #888; */
-          box-shadow: 0px -1px 20px 0px #562c8c6b;
+  -moz-box-shadow: 0 0 10px #888;
+  /* box-shadow: 0 0 10px #888; */
+  box-shadow: 0px -1px 20px 0px #562c8c6b;
 }
+
 .ribbon a {
   border: 1px solid #000;
   color: #000;

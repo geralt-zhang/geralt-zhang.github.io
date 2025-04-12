@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "安全和密码学"
-date: 2020-01-28
+date: 2025-01-28
 ready: true
 sync: true
 syncdate: 2021-04-24
@@ -210,7 +210,7 @@ Windows 的 [BitLocker](https://fossbytes.com/enable-full-disk-encryption-window
 
 ## SSH
 
-我们在 [之前的一堂课](/2020/command-line/#remote-machines) 讨论了 SSH 和 SSH 密钥的使用。那么我们今天从密码学的角度来分析一下它们。
+我们在 [之前的一堂课](/2025/command-line/#remote-machines) 讨论了 SSH 和 SSH 密钥的使用。那么我们今天从密码学的角度来分析一下它们。
 
 当你运行 `ssh-keygen` 命令，它会生成一个非对称密钥对：公钥和私钥 `(public_key, private_key)`。 
 生成过程中使用的随机数由系统提供的熵决定。这些熵可以来源于硬件事件(hardware events)等。

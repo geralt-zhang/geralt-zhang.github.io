@@ -3,7 +3,7 @@ title: 'the missing semester of your cs education'
 url: "https://zhangzhehua66.github.io"
 baseurl:   # ✅ 这一行是关键！
 
-solution_url: missing-notes-and-solutions/2020/solutions/
+solution_url: missing-notes-and-solutions/2025/solutions/
 # Settings
 markdown: kramdown
 kramdown:
@@ -20,7 +20,7 @@ analytics:
 collections:
   '2019':
     output: true
-  '2020':
+  '2025':
     output: true
 
 # Excludes

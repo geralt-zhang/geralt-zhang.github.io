@@ -27,20 +27,20 @@ bundle exec jekyll serve -w
 想要参与这个翻译项目，请通过创建一个 issue 来预订您的主题，我会相应地更新此表格，以避免重复工作。
 
 
-|  讲义   | 翻译者  | 状态 |
-|  ----  | ----  |----  |
-| [course-shell.md](_2020/course-shell.md)  | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
-| [shell-tools.md](_2020/shell-tools.md)  | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
-| [editors.md](_2020/editors.md)  |  [@stechu](https://github.com/stechu) | 完成 |
-| [data-wrangling.md](_2020/data-wrangling.md)  | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
-| [command-line.md](_2020/command-line.md)  | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
-| [version-control.md](_2020/version-control.md)  | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
-| [debugging-profiling.md](_2020/debugging-profiling.md)  |[@Lingfeng AI](https://github.com/hanxiaomax)  | 完成  |
-| [metaprogramming.md](_2020/metaprogramming.md)  | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
-| [security.md](_2020/security.md)  | [@catcarbon](https://github.com/catcarbon) | 完成 |
-| [potpourri.md](_2020/potpourri.md) |  [@catcarbon](https://github.com/catcarbon) | 完成 |
-| [qa.md](_2020/qa.md) | [@AA1HSHH](https://github.com/AA1HSHH) | 完成 |
-| [about.md](about.md)  | [@Binlogo](https://github.com/Binlogo)  | 完成 |
+| 讲义                                                   | 翻译者                                        | 状态 |
+| ------------------------------------------------------ | --------------------------------------------- | ---- |
+| [course-shell.md](_2025/course-shell.md)               | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
+| [shell-tools.md](_2025/shell-tools.md)                 | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
+| [editors.md](_2025/editors.md)                         | [@stechu](https://github.com/stechu)          | 完成 |
+| [data-wrangling.md](_2025/data-wrangling.md)           | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
+| [command-line.md](_2025/command-line.md)               | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
+| [version-control.md](_2025/version-control.md)         | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
+| [debugging-profiling.md](_2025/debugging-profiling.md) | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
+| [metaprogramming.md](_2025/metaprogramming.md)         | [@Lingfeng AI](https://github.com/hanxiaomax) | 完成 |
+| [security.md](_2025/security.md)                       | [@catcarbon](https://github.com/catcarbon)    | 完成 |
+| [potpourri.md](_2025/potpourri.md)                     | [@catcarbon](https://github.com/catcarbon)    | 完成 |
+| [qa.md](_2025/qa.md)                                   | [@AA1HSHH](https://github.com/AA1HSHH)        | 完成 |
+| [about.md](about.md)                                   | [@Binlogo](https://github.com/Binlogo)        | 完成 |
 
 
 ## 新项目

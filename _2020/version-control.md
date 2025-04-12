@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "版本控制(Git)"
-date: 2020-01-22
+date: 2025-01-22
 ready: true
 sync: true
 syncdate: 2021-04-24
@@ -249,7 +249,7 @@ repository, visualized in graph form.
 $ git log --all --graph --decorate
 * commit 4515d17a167bdef0a91ee7d50d75b12c9c2652aa (HEAD -> master)
   Author: Missing Semester <missing-semester@mit.edu>
-  Date:   Tue Jan 21 22:18:36 2020 -0500
+  Date:   Tue Jan 21 22:18:36 2025 -0500
 
       Initial commit
 ```
@@ -287,13 +287,13 @@ Now, if we visualize the history again, we'll see some of the graph structure:
 ```
 * commit 35f60a825be0106036dd2fbc7657598eb7b04c67 (HEAD -> master)
 | Author: Missing Semester <missing-semester@mit.edu>
-| Date:   Tue Jan 21 22:26:20 2020 -0500
+| Date:   Tue Jan 21 22:26:20 2025 -0500
 |
 |     Add a line
 |
 * commit 4515d17a167bdef0a91ee7d50d75b12c9c2652aa
   Author: Anish Athalye <me@anishathalye.com>
-  Date:   Tue Jan 21 22:18:36 2020 -0500
+  Date:   Tue Jan 21 22:18:36 2025 -0500
 
       Initial commit
 ```

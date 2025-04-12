@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "命令行环境"
-date: 2020-01-21
+date: 2025-01-21
 ready: true
 sync: true
 syncdate: 2021-04-24
@@ -29,7 +29,7 @@ solution:
 
 在上面的例子中，当我们输入 `Ctrl-C` 时，shell 会发送一个 `SIGINT` 信号到进程。
 
-下面这个 Python 程序向您展示了捕获信号 `SIGINT` 并忽略它的基本操作，它并不会让程序停止。为了停止这个程序，我们需要使用 `SIGQUIT` 信号，通过输入 `Ctrl-\` 可以发送该信号。
+###### 下面这个 Python 程序向您展示了捕获信号 `SIGINT` 并忽略它的基本操作，它并不会让程序停止。为了停止这个程序，我们需要使用 `SIGQUIT` 信号，通过输入 `Ctrl-\` 可以发送该信号。
 
 ```python
 #!/usr/bin/env python

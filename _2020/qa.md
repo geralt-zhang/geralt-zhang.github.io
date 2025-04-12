@@ -1,7 +1,7 @@
 ---
 layout: lecture
 title: "提问&回答"
-date: 2020-01-30
+date: 2025-01-30
 ready: true
 sync: true
 syncdate: 2021-04-24
@@ -87,7 +87,7 @@ video:
 - `/home` - 系统用户的主目录
 - `/lib` - 系统软件通用库
 - `/opt` - 可选的应用软件
-- `/sys` - 包含系统的信息和配置([第一堂课](/2020/course-shell/) 介绍的)
+- `/sys` - 包含系统的信息和配置([第一堂课](/2025/course-shell/) 介绍的)
 - `/tmp` - 临时文件( `/var/tmp` ) 通常重启时删除
 - `/usr/` - 只读的用户数据
   + `/usr/bin` - 非必须的命令二进制文件
@@ -107,7 +107,7 @@ video:
 
 ## 用于提高代码性能，简单好用的性能分析工具有哪些?
 
-性能分析方面相当有用和简单工具是 [print timing](/2020/debugging-profiling/#timing)。你只需手动计算代码不同部分之间花费的时间。通过重复执行此操作，你可以有效地对代码进行二分法搜索，并找到花费时间最长的代码段。
+性能分析方面相当有用和简单工具是 [print timing](/2025/debugging-profiling/#timing)。你只需手动计算代码不同部分之间花费的时间。通过重复执行此操作，你可以有效地对代码进行二分法搜索，并找到花费时间最长的代码段。
 
 对于更高级的工具， Valgrind 的 [Callgrind](http://valgrind.org/docs/manual/cl-manual.html) 可让你运行程序并计算所有的时间花费以及所有调用堆栈（即哪个函数调用了另一个函数）。然后，它会生成带注释的代码版本，其中包含每行花费的时间。但是，它会使程序运行速度降低一个数量级，并且不支持线程。其他的，[ `perf` ](http://www.brendangregg.com/perf.html) 工具和其他特定语言的采样性能分析器可以非常快速地输出有用的数据。[Flamegraphs](http://www.brendangregg.com/flamegraphs.html) 是对采样分析器结果的可视化工具。你还可以使用针对特定编程语言或任务的工具。例如，对于 Web 开发而言，Chrome 和 Firefox 内置的开发工具具有出色的性能分析器。
 
@@ -127,7 +127,7 @@ video:
 
 在数据整理那一节课程中，我们没有时间讨论一些数据整理工具，包括分别用于 JSON 和 HTML 数据的专用解析器， `jq` 和 `pup`。Perl 语言是另一个更高级的可以用于数据整理管道的工具。另一个技巧是使用 `column -t` 命令，可以将空格文本（不一定对齐）转换为对齐的文本。
 
-一般来说，vim 和 Python 是两个不常规的数据整理工具。对于某些复杂的多行转换，vim 宏是非常有用的工具。你可以记录一系列操作，并根据需要重复执行多次，例如，在编辑的 [讲义](/2020/editors/#macros)（去年 [视频](/2019/editors/)）中，有一个示例是使用 vim 宏将 XML 格式的文件转换为 JSON。
+一般来说，vim 和 Python 是两个不常规的数据整理工具。对于某些复杂的多行转换，vim 宏是非常有用的工具。你可以记录一系列操作，并根据需要重复执行多次，例如，在编辑的 [讲义](/2025/editors/#macros)（去年 [视频](/2019/editors/)）中，有一个示例是使用 vim 宏将 XML 格式的文件转换为 JSON。
 
 对于通常以 CSV 格式显示的表格数据， Python [pandas](https://pandas.pydata.org/) 库是一个很棒的工具。不仅因为它能让复杂操作的定义（如分组依据，联接或过滤器）变得非常容易，而且还便于根据不同属性绘制数据。它还支持导出多种表格格式，包括 XLS，HTML 或 LaTeX。另外，R 语言(一种有争议的 [不好](http://arrgh.tim-smith.us/) 的语言）具有很多功能，可以计算数据的统计数字，这在管道的最后一步中非常有用。 [ggplot2](https://ggplot2.tidyverse.org/) 是 R 中很棒的绘图库。
 
@@ -181,5 +181,5 @@ Emacs 的优点是可以用 Lisp 语言进行扩展（Lisp 比 vim 默认的脚�
 
 ## 对于不同的 Web 浏览器有什么评价?
 
-2020 的浏览器现状是，大部分的浏览器都与 Chrome 类似，因为它们都使用同样的引擎(Blink)。Microsoft Edge 同样基于 Blink，而 Safari 则 基于 WebKit(与 Blink 类似的引擎)，这些浏览器仅仅是更糟糕的 Chrome 版本。不管是在性能还是可用性上，Chrome 都是一款很不错的浏览器。如果你想要替代品，我们推荐 Firefox。Firefox 与 Chrome 的在各方面不相上下，并且在隐私方面更加出色。
+2025 的浏览器现状是，大部分的浏览器都与 Chrome 类似，因为它们都使用同样的引擎(Blink)。Microsoft Edge 同样基于 Blink，而 Safari 则 基于 WebKit(与 Blink 类似的引擎)，这些浏览器仅仅是更糟糕的 Chrome 版本。不管是在性能还是可用性上，Chrome 都是一款很不错的浏览器。如果你想要替代品，我们推荐 Firefox。Firefox 与 Chrome 的在各方面不相上下，并且在隐私方面更加出色。
 有一款目前还没有完成的叫 Flow 的浏览器，它实现了全新的渲染引擎，有望比现有引擎速度更快。

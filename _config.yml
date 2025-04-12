@@ -1,9 +1,8 @@
 # Setup
-title: 'the missing semester of your cs education'
+title: '河边的西瓜'
 url: "https://zhangzhehua66.github.io"
-baseurl:   # ✅ 这一行是关键！
+baseurl:
 
-solution_url: missing-notes-and-solutions/2025/solutions/
 # Settings
 markdown: kramdown
 kramdown:
@@ -13,7 +12,7 @@ highlighter: rouge
 permalink: /:title/
 future: true
 # safe: true # breaks local rendering if enabled
-timezone: America/New_York
+timezone: Asia/Shanghai
 analytics:
   tracking_id: UA-53167467-11
 

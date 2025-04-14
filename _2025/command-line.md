@@ -29,7 +29,7 @@ solution:
 
 在上面的例子中，当我们输入 `Ctrl-C` 时，shell 会发送一个 `SIGINT` 信号到进程。
 
-###### 下面这个 Python 程序向您展示了捕获信号 `SIGINT` 并忽略它的基本操作，它并不会让程序停止。为了停止这个程序，我们需要使用 `SIGQUIT` 信号，通过输入 `Ctrl-\` 可以发送该信号。
+下面这个 Python 程序向您展示了捕获信号 `SIGINT` 并忽略它的基本操作，它并不会让程序停止。为了停止这个程序，我们需要使用 `SIGQUIT` 信号，通过输入 `Ctrl-\` 可以发送该信号。
 
 ```python
 #!/usr/bin/env python
@@ -73,7 +73,7 @@ I got a SIGINT, but I am not stopping
 
 下面这个简单的会话中展示来了些概念的应用。
 
-```
+```shell
 $ sleep 1000
 ^Z
 [1]  + 18653 suspended  sleep 1000

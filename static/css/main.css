@@ -2,11 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro);
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Noto+Serif+SC:wght@200..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
-@font-face {
-  font-family: "LXGWNeoXiHei";
-  src: url("static/fonts/LXGWNeoXiHei.ttf") format("truetype");
-}
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 
 /* Basic styling */
 
@@ -18,17 +14,14 @@
 }
 
 html {
-  /*  font-size: 14px;
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-  font-family: "Noto Serif SC", "LXGWNeoXiHei", "Source Sans Pro", sans-serif;
-  font-size: 16pt;
+  font-size: 14px;
+  font-family: "Ubuntu Mono", sans-serif;
   line-height: 1.5;
 }
 
 @media(min-width: 480px) {
   html {
-    /*font-size: 16px;*/
-    font-size: 16pt;
+    font-size: 14pt;
   }
 }
 
@@ -47,19 +40,18 @@ h5,
 h6 {
   margin-bottom: 1rem;
   font-weight: bold;
-  /*text-decoration: underline;*/
   line-height: 1.25;
   font-size: 1rem;
 }
 
 h1 {
-  margin-top: 1.25rem;
+  margin-top: 1rem;
   font-size: 1.5rem;
 }
 
 h2 {
-  margin-top: 1.25rem;
-  font-size: 1.1rem;
+  margin-top: 1rem;
+  font-size: 1.2rem;
 }
 
 p {
@@ -75,66 +67,47 @@ em {
   font-style: italic;
 }
 
-ul {
-  list-style-position: inside;
-  padding-left: 1rem;
+ul,
+ol,
+dl{
+  margin: 0.8em 0;
 }
 
-ol {
-  margin-left: 1rem;
-}
-
+li>ol,
 li>ul {
-  padding-left: 2rem;
+  margin: 0 0;
 }
 
-ul li {
-  list-style-type: none;
+li p.first {
+  display: inline-block;
 }
 
 ul,
 ol {
-  margin-bottom: 1rem;
+  padding-left: 30px;
 }
 
-ul ul,
-ol ul,
-ul ol,
-ol ol {
-  margin-bottom: inherit;
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
 }
 
-ul li:before {
-  content: "\2013  ";
-  /* note: extra space needed because first is consumed by css parser */
-  position: absolute;
-  margin-left: -1rem;
-}
-
-ul.double-spaced li {
-  margin-top: 1rem;
-}
-
-pre,
-code {
-  font-family: "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
+ul:last-child,
+ol:last-child {
+    margin-bottom: 1rem;
 }
 
 code {
-  background-color: rgba(27, 31, 35, .05);
+  color: #995c8b;
+  font-family: "Ubuntu Mono", sans-serif;
   border-radius: 3px;
-  padding: 0 0.2rem;
-  font-size: 0.9em;
-  /* font-size: 12pt; */
 }
 
 pre {
   color: #000;
-  margin: 1rem;
-  padding: 0.5rem 0.7rem;
+  margin: 1rem 0rem;
+  padding: 1rem;
   border: 1px dashed #444;
-  font-size: .8rem;
-  /* font-size: 14pt; */
   overflow-x: auto;
 }
 
@@ -245,7 +218,7 @@ hr {
 #nav-bg {
   margin: 0;
   padding: 0.25rem 1rem;
-  font-family: "Noto Serif SC", "LXGWNeoXiHei", "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
+  /* font-family: "Noto Serif SC", "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace; */
   background: #17007e;
   color: #fff;
 }
@@ -288,9 +261,9 @@ input[type=checkbox]:checked~.trigger {
   margin: auto;
 }
 
-.menu-label {
+/* .menu-label {
   font-family: "Source Code Pro", "Menlo", "DejaVu Sans Mono", "Lucida Console", monospace;
-}
+} */
 
 input[type=checkbox]~.menu-label:after {
   content: "(+)";
@@ -401,7 +374,6 @@ input[type=checkbox]:checked~.menu-label:after {
 
   html {
     font-size: 1em;
-    font-family: sans-serif;
   }
 
   body {
@@ -465,7 +437,7 @@ input[type=checkbox]:checked~.menu-label:after {
   border: 1px solid #000;
   color: #000;
   display: block;
-  font: bold 81.25% "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: bold 81.25%;
   margin: 1px 0;
   padding: 10px 50px;
   text-align: center;

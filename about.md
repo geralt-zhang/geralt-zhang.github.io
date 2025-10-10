@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "河边的西瓜"
+title: "Zhehua Zhang"
 ---
 
-我把Missing一课的网页fork了下来，并打算在这里建筑自己的博客。
+I am doing SSD test now.

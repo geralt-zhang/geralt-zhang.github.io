@@ -325,7 +325,7 @@ input[type=checkbox]:checked~.menu-label:after {
 
   a {
     color: #66D9EF;
-    /*color: #A6E22E;*/
+    /*color: #e2d32e;*/
     text-decoration: none;
   }
 
@@ -347,7 +347,7 @@ input[type=checkbox]:checked~.menu-label:after {
   #nav-bg,
   a#logo,
   #top-nav a {
-    background-color: #A6E22E;
+    background-color: #e2d32e;
     color: #202520;
   }
 

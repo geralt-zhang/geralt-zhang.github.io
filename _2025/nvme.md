@@ -8,6 +8,10 @@ sync: true
 syncdate: 2025-09-27
 ---
 
-# 虚拟盘是怎么出现在我的系统里的?
+什么是 `nvme-virt` ？
 
-what is `nvme-virt`?
+通过虚拟出的 PCIe 设备，模拟 NVMe SSD 的使用
+
+代码结构：
+
+The device is emulated at the PCI layer, presenting a native NVMe device to the entire system. Thus, NVMeVirt has the capability not only to function as a standard storage device, but also to be utilized in advanced storage configurations, such as NVMe-oF target offloading, kernel bypassing, and PCI peer-to-peer communication.

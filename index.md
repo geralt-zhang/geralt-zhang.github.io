@@ -7,17 +7,8 @@ title: 河边的西瓜
 
 NEED TO DO:
 
-* 把字体的段落格式调一下，两端对齐 ✅
-* 写点 blob
+√ 把字体的段落格式调一下，两端对齐 
 
-<!-- <ul>
-{% assign lectures = site['2025'] | sort: 'date' %}
-{% for lecture in lectures %}
-    {% if lecture.phony != true and lecture.solution !=true  %}
-        <li>
-        <strong>{{ lecture.date | date: '%-m/%d' }}</strong>:
-            <a href="{{ lecture.url }}">{{ lecture.title }}</a><span style="float:right">{{lecture.syncdate}}</span>
-        </li>
-    {% endif %}
-{% endfor %}
-</ul> -->
+o 写点 blob
+
+o clangd 和内核代码的索引需要修复

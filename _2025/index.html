@@ -1,35 +1,96 @@
 ---
 layout: page
-title: "2025 blobs"
+title: ""
 permalink: /2025/
 phony: true
-excerpt: '' # work around a bug
 ---
 
-<ul class="double-spaced">
-  {% assign lectures = site['2025'] | sort: 'date' %}
-  {% for lecture in lectures %}
-  {% if lecture.phony != true %}
-  <li>
-    <strong>{{ lecture.date | date: '%-m/%d' }}</strong>:
-    {% if lecture.ready %}
-    <a href="{{ lecture.url }}">{{ lecture.title }}</a>
-    {% elsif lecture.noclass %}
-    {{ lecture.title }} [no class]
-    {% else %}
-    {{ lecture.title }} [coming soon]
+<!-- 生成标签列表（稳健收集所有 tags） -->
+<ul id="tag-list">
+  {% assign all_tags = "" | split: "," %}
+  {% for doc in site['2025'] %}
+    {% if doc.tags %}
+      {% for t in doc.tags %}
+        {% assign all_tags = all_tags | push: t %}
+      {% endfor %}
     {% endif %}
-    {% if lecture.details %}
-    <span style="float:right">{{ lecture.details }}</span>
-    {% endif %}
-  </li>
-  {% endif %}
+  {% endfor %}
+  {% assign unique_tags = all_tags | uniq | sort %}
+  
+  <li class="tag" data-tag="__all__">All blobs{% unless forloop.last %} |{% endunless %}</li>
+  
+  {% for tag in unique_tags %}
+    <li class="tag" data-tag="{{ tag | strip }}">{{ tag | strip }}{% unless forloop.last %} |{% endunless %}</li>
   {% endfor %}
 </ul>
-<!-- 
-讲座视频可以在 <a href="https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J">YouTube</a>上找到。
 
+<!-- 列表主体 -->
+<ul id="lecture-list" class="double-spaced">
+  {% assign lectures = site['2025'] | sort: 'date' %}
+  {% for lecture in lectures %}
+    {% if lecture.phony != true %}
+      <li data-tags="{% if lecture.tags %}{{ lecture.tags | join: ',' }}{% endif %}">
+        <strong>{{ lecture.date | date: '%-m/%d' }}</strong>:
+        {% if lecture.ready %}
+          <a href="{{ lecture.url }}">{{ lecture.title }}</a>
+        {% elsif lecture.noclass %}
+          {{ lecture.title }} [no class]
+        {% else %}
+          {{ lecture.title }} [coming soon]
+        {% endif %}
+        {% if lecture.details %}
+          <span style="float:right">{{ lecture.details }}</span>
+        {% endif %}
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
 
-<h2>往期讲座</h2>
+<script>
+// Debug helper: 输出 tag 列表与 items 的 data-tags，便于排错
+console.log("=== Tag list DOM ===");
+document.querySelectorAll('#tag-list .tag').forEach(t => console.log('TAG:', t.dataset.tag));
 
-<p>您也可以访问<a href="/2019/">去年的讲座笔记和视频</a>。</p> -->
+console.log("=== Lecture items ===");
+document.querySelectorAll('#lecture-list li').forEach(li => console.log('ITEM:', li.innerText.trim().slice(0,40), '=>', li.dataset.tags));
+
+// 绑定交互
+(function() {
+  const tags = Array.from(document.querySelectorAll('#tag-list .tag'));
+  const items = Array.from(document.querySelectorAll('#lecture-list li'));
+
+  function showAll() {
+    items.forEach(i => i.style.display = '');
+    tags.forEach(t => t.classList.remove('active'));
+    // highlight "全部"
+    const all = tags.find(t => t.dataset.tag === '__all__');
+    if (all) all.classList.add('active');
+  }
+
+  // 初始化：显示全部
+  showAll();
+
+  tags.forEach(tagEl => {
+    tagEl.addEventListener('click', () => {
+      const tag = (tagEl.dataset.tag || '').trim();
+      console.log('Clicked tag:', tag);
+      if (tag === '__all__') {
+        showAll();
+        return;
+      }
+
+      // 切换 active
+      tags.forEach(t => t.classList.remove('active'));
+      tagEl.classList.add('active');
+
+      // 过滤 items；如果某 item 的 data-tags 包含该 tag 就显示
+      items.forEach(li => {
+        const raw = (li.dataset.tags || '').trim();
+        const tagsArray = raw === '' ? [] : raw.split(',').map(s => s.trim());
+        console.log('Checking', li.innerText.trim().slice(0,30), '=>', tagsArray);
+        li.style.display = tagsArray.includes(tag) ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>

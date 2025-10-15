@@ -34,6 +34,26 @@ body {
   text-justify: inter-word; /* 可选，调整单词间距使对齐更自然 */
 }
 
+#tag-list {
+  margin-bottom: 1em;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  justify-content: center; /* 水平居中 */
+}
+
+#tag-list .tag {
+  cursor: pointer;
+  color: #888;
+  transition: 0.2s;
+}
+
+#tag-list .active {
+  color: #17007e;
+}
+
 h1,
 h2,
 h3,
@@ -105,12 +125,6 @@ li {
   margin-bottom: 0.5rem;
 }
 
-code {
-  color: #e2d32e;
-  font-family: "Ubuntu Mono", sans-serif;
-  border-radius: 3px;
-}
-
 pre {
   color: #000;
   margin: 1rem 0rem;
@@ -119,11 +133,26 @@ pre {
   overflow-x: auto;
 }
 
+code{
+  font-family: "Ubuntu Mono", sans-serif;
+}
+
 pre code {
   color: inherit;
   background: none;
   font-size: 100%;
   padding: 0;
+}
+
+blockquote {
+    color: #17007e;
+    border-left: .2rem solid #17007e;
+    margin: 1rem 0;
+    padding: .25rem 0 .25rem 1rem;
+}
+
+blockquote p {
+  margin: 0;
 }
 
 a {

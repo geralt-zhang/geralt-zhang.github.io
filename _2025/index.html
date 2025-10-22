@@ -30,7 +30,7 @@ phony: true
   {% for lecture in lectures %}
     {% if lecture.phony != true %}
       <li data-tags="{% if lecture.tags %}{{ lecture.tags | join: ',' }}{% endif %}">
-        <strong>{{ lecture.date | date: '%-m/%d' }}</strong>:
+        <strong>{{ lecture.date | date: '%m/%d' }}</strong>:
         {% if lecture.ready %}
           <a href="{{ lecture.url }}">{{ lecture.title }}</a>
         {% elsif lecture.noclass %}

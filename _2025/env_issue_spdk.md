@@ -1,9 +1,9 @@
 ---
 layout: lecture
 title: "SPDK Environment Issue"
-details: Difficults in set up env
+details:
 date: 2025-10-13
-ready: true
+ready: false
 sync: true
 tags: [env_issue]
 syncdate: "{{ page.last_modified_at | date: '%Y-%m-%d' }}"

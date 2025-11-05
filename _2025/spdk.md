@@ -1,9 +1,9 @@
 ---
 layout: lecture
 title: "SPDK Leanring"
-details: An user nvme driver
+details:
 date: 2025-09-29
-ready: true
+ready: false
 sync: true
 tags: [learn]
 syncdate: 2025-09-29

@@ -1,9 +1,9 @@
 ---
 layout: lecture
 title: "NVMe Virt"
-details: pcie & nvme details
+details:
 date: 2025-09-27
-ready: true
+ready: false
 sync: true
 syncdate: 2025-09-27
 ---

@@ -1,9 +1,9 @@
 ---
 layout: lecture
 title: "Plotly & HTML"
-details: fig and web learn again
+details:
 date: 2025-10-20
-ready: true
+ready: false
 sync: true
 syncdate: 2025-10-20
 ---

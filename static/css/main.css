@@ -21,7 +21,7 @@
 /* 暗色模式 */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-main: #e2d32e;
+    --color-main: #72eaff;
     --color-accent: #F92672;
     --color-bg: #303030;
     --color-text: #dddddd;
@@ -29,8 +29,8 @@
     --color-border: #444444;
     --color-link-hover-bg: #2a2a2a;
     --color-link-hover-text: #ffffff;
-    --color-nav-bg: #e2d32e;
-    --color-nav-text: #202520;
+    --color-nav-bg: #000000;
+    --color-nav-text: #ffffff;
   }
 }
 
@@ -254,11 +254,11 @@ th, td {
   text-align: left;
 }
 th {
-  background-color: #f7f7f7;
+  background-color: #c7c7c7;
   font-weight: 600;
   color: #333;
 }
-tr:hover { background: #f0f0f0; }
+tr:hover { background: #f0f0f0; color: #000;}
 
 /* ---------- 打印 ---------- */
 @media print {

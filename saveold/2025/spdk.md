@@ -5,7 +5,7 @@ details:
 date: 2025-09-29
 ready: false
 sync: true
-tags: [learn]
+tags: [learan]
 syncdate: 2025-09-29
 ---
 

@@ -44,12 +44,12 @@
 }
 
 html {
-  font-size: 12px;
+  font-size: 14px;
   font-family: "Roboto", sans-serif;
-  line-height: 1.5;
+  line-height: 1.35;
 }
-@media (min-width: 640px) {
-  html { font-size: 12pt; }
+@media (min-width: 1024px) {
+  html { font-size: 14pt; }
 }
 
 body {
@@ -89,12 +89,12 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text);
 }
 
-h1 { font-size: 1.8rem; margin-top: 1rem; }
-h2 { font-size: 1.4rem; margin-top: 1rem; }
-h3 { font-size: 1.2rem; }
-h4 { font-size: 1.1rem; }
+h1 { font-size: 1.4rem; margin-top: 1rem; }
+h2 { font-size: 1.2rem; margin-top: 1rem; }
+h3 { font-size: 1rem; }
+h4 { font-size: 1rem; }
 h5 { font-size: 1rem; }
-h6 { font-size: 0.9rem; }
+h6 { font-size: 1rem; }
 
 /* ---------- 段落与列表 ---------- */
 p {
@@ -102,7 +102,7 @@ p {
   margin: 0 0 1rem 0;
 }
 
-ul, ol, dl { margin: 0.8em 0; }
+ul, ol, dl { margin: 1em 0; }
 ul, ol { padding-left: 30px; }
 li { margin-bottom: 0.5rem; }
 
@@ -111,20 +111,58 @@ em { font-style: italic; }
 
 /* ---------- 代码块 ---------- */
 pre {
+  position: relative;
   color: var(--color-text);
   margin: 1rem 0;
   padding: 1rem;
   border: 1px dashed var(--color-border);
   overflow-x: auto;
-  font-family: "Ubuntu Mono", monospace;
+  font-family: "Fira Code", Consolas;
 }
+
+.copy-button {
+  position: absolute;
+  top: 1rem;
+  right: 0.7rem;
+  padding: 0rem 0.4rem;
+  background-color: var(--color-accent);
+  color: var(--color-nav-text);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.copy-icon {
+  display: inline-block;
+}
+
+pre:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:hover {
+  background-color: var(--color-accent);
+}
+
+.copy-button.copied {
+  padding: 0rem 0.45rem;
+  background-color: var(--color-accent);
+}
+
 code {
-  font-family: "Ubuntu Mono", monospace;
+  font-family: "Fira Code", monospace;
 }
 pre code {
   color: inherit;
   background: none;
-  font-size: 90%;
+  /* font-size: 90%; */
   padding: 0;
 }
 
@@ -188,7 +226,7 @@ hr {
 
 /* ---------- 内容区 ---------- */
 #content {
-  max-width: 45rem;
+  max-width: 50rem;
   margin: auto;
   margin-bottom: 2rem;
   padding: 1rem 1rem 0 1rem;
@@ -272,6 +310,7 @@ tr:hover { background: #f0f0f0; color: #000;}
 }
 
 /* ---------- Ribbon ---------- */
+
 .ribbon {
   background-color: #8cbcea;
   overflow: hidden;
@@ -282,6 +321,7 @@ tr:hover { background: #f0f0f0; color: #000;}
   transform: rotate(45deg);
   box-shadow: 0px -1px 20px 0px #562c8c6b;
 }
+
 .ribbon a {
   border: 1px solid #000;
   color: #000;

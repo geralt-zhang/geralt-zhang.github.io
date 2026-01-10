@@ -17,9 +17,7 @@ analytics:
   tracking_id: UA-53167467-11
 
 collections:
-  '2019':
-    output: true
-  '2025':
+  'blob':
     output: true
 
 # Excludes

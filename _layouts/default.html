@@ -1,16 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  {% include head.html %}
+{% include head.html %}
 
-  <body>
+<script>
+  function initCopyButtons() {
+    const codeBlocks = document.querySelectorAll('pre');
 
-    {% include nav.html %}
+    codeBlocks.forEach((block) => {
+      const button = document.createElement('button');
+      button.className = 'copy-button';
+      button.innerHTML = '⎘';
+      button.setAttribute('aria-label', 'Copy code');
+      button.setAttribute('title', 'Copy code');
+      block.appendChild(button);
 
-    <div id="content">
+      button.addEventListener('click', async () => {
+        const code = block.querySelector('code')?.textContent || block.textContent;
+        try {
+          await navigator.clipboard.writeText(code);
+          button.innerHTML = '√';
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.innerHTML = '⎘';
+            button.classList.remove('copied');
+          }, 2500);
+        } catch (err) {
+          console.error('复制失败:', err);
+          button.innerHTML = 'x';
+        }
+      });
+    });
+  }
+
+  // 页面加载完成后初始化
+  document.addEventListener('DOMContentLoaded', initCopyButtons);
+</script>
+
+<body>
+
+  {% include nav.html %}
+
+  <div id="content">
     {{ content }}
-    </div>
+  </div>
 
-  </body>
+</body>
 
 </html>

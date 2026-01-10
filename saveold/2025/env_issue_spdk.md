@@ -5,7 +5,7 @@ details:
 date: 2025-10-13
 ready: false
 sync: true
-tags: [env_issue]
+tags: [a]
 syncdate: "{{ page.last_modified_at | date: '%Y-%m-%d' }}"
 ---
 

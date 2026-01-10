@@ -1,20 +1,27 @@
 ---
 layout: page
 title: ""
-permalink: /2025/
+permalink: /blob/
 phony: true
 ---
 
-<!-- 生成标签列表（稳健收集所有 tags） -->
+<!-- 根据文件夹结构自动生成标签 -->
 <ul id="tag-list">
   {% assign all_tags = "" | split: "," %}
-  {% for doc in site['2025'] %}
-    {% if doc.tags %}
-      {% for t in doc.tags %}
-        {% assign all_tags = all_tags | push: t %}
-      {% endfor %}
+  {% assign all_items = site['blob'] | sort: 'date' %}
+  
+  <!-- 收集所有文件夹标签 -->
+  {% for doc in all_items %}
+    {% if doc.phony != true %}
+      <!-- 从 URL 中提取文件夹名 /blob/folder/file -> folder -->
+      {% assign url_parts = doc.url | split: '/' %}
+      {% if url_parts.size >= 4 %}
+        {% assign folder = url_parts[2] %}
+        {% assign all_tags = all_tags | push: folder %}
+      {% endif %}
     {% endif %}
   {% endfor %}
+  
   {% assign unique_tags = all_tags | uniq | sort %}
   
   <li class="tag" data-tag="__all__">All blobs{% unless forloop.last %} |{% endunless %}</li>
@@ -26,11 +33,15 @@ phony: true
 
 <!-- 列表主体 -->
 <ul id="lecture-list" class="double-spaced">
-  {% assign lectures = site['2025'] | sort: 'date' %}
+  {% assign lectures = site['blob'] | sort: 'date' | reverse %}
   {% for lecture in lectures %}
     {% if lecture.phony != true %}
-      <li data-tags="{% if lecture.tags %}{{ lecture.tags | join: ',' }}{% endif %}">
-        <strong>{{ lecture.date | date: '%m/%d' }}</strong>:
+      <!-- 提取文件夹作为标签 -->
+      {% assign url_parts = lecture.url | split: '/' %}
+      {% assign folder_tag = url_parts[2] %}
+      
+      <li data-tags="{{ folder_tag }}">
+        <strong>{{ lecture.date | date: '%Y/%m/%d' }}</strong>:
         {% if lecture.ready %}
           <a href="{{ lecture.url }}">{{ lecture.title }}</a>
         {% elsif lecture.noclass %}
@@ -47,14 +58,7 @@ phony: true
 </ul>
 
 <script>
-// Debug helper: 输出 tag 列表与 items 的 data-tags，便于排错
-console.log("=== Tag list DOM ===");
-document.querySelectorAll('#tag-list .tag').forEach(t => console.log('TAG:', t.dataset.tag));
-
-console.log("=== Lecture items ===");
-document.querySelectorAll('#lecture-list li').forEach(li => console.log('ITEM:', li.innerText.trim().slice(0,40), '=>', li.dataset.tags));
-
-// 绑定交互
+// 绑定交互 - 按文件夹过滤
 (function() {
   const tags = Array.from(document.querySelectorAll('#tag-list .tag'));
   const items = Array.from(document.querySelectorAll('#lecture-list li'));
@@ -62,18 +66,17 @@ document.querySelectorAll('#lecture-list li').forEach(li => console.log('ITEM:',
   function showAll() {
     items.forEach(i => i.style.display = '');
     tags.forEach(t => t.classList.remove('active'));
-    // highlight "全部"
     const all = tags.find(t => t.dataset.tag === '__all__');
     if (all) all.classList.add('active');
   }
 
-  // 初始化：显示全部
+  // 初始化
   showAll();
 
   tags.forEach(tagEl => {
     tagEl.addEventListener('click', () => {
       const tag = (tagEl.dataset.tag || '').trim();
-      console.log('Clicked tag:', tag);
+      
       if (tag === '__all__') {
         showAll();
         return;
@@ -83,12 +86,10 @@ document.querySelectorAll('#lecture-list li').forEach(li => console.log('ITEM:',
       tags.forEach(t => t.classList.remove('active'));
       tagEl.classList.add('active');
 
-      // 过滤 items；如果某 item 的 data-tags 包含该 tag 就显示
+      // 按文件夹过滤
       items.forEach(li => {
-        const raw = (li.dataset.tags || '').trim();
-        const tagsArray = raw === '' ? [] : raw.split(',').map(s => s.trim());
-        console.log('Checking', li.innerText.trim().slice(0,30), '=>', tagsArray);
-        li.style.display = tagsArray.includes(tag) ? '' : 'none';
+        const itemTags = (li.dataset.tags || '').trim();
+        li.style.display = itemTags === tag ? '' : 'none';
       });
     });
   });

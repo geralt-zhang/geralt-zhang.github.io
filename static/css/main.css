@@ -7,7 +7,7 @@
 /* ---------- 颜色变量 ---------- */
 :root {
   --color-main: #17007e;        /* 主色 */
-  --color-accent: #8c0038;      /* 强调色 */
+  --color-accent: #d01f1f;      /* 强调色 */
   --color-bg: #ffffff;          /* 背景色 */
   --color-text: #000000;        /* 正文字体 */
   --color-muted: #888888;       /* 次要文字 */
@@ -69,6 +69,7 @@ body {
   flex-wrap: wrap;
   gap: 0.5em;
   justify-content: center;
+  font-family: "Fira Code";
 }
 
 #tag-list .tag {
@@ -79,6 +80,10 @@ body {
 
 #tag-list .active {
   color: var(--color-main);
+}
+
+#lecture-list{
+  font-family: "Fira Code";
 }
 
 /* ---------- 标题 ---------- */
@@ -153,16 +158,18 @@ pre:hover .copy-button {
 
 .copy-button.copied {
   padding: 0rem 0.45rem;
-  background-color: var(--color-accent);
+  background-color: var(--color-main);
 }
 
 code {
   font-family: "Fira Code", monospace;
+  font-size: 90%;
 }
+
 pre code {
   color: inherit;
   background: none;
-  /* font-size: 90%; */
+  font-size: 90%;
   padding: 0;
 }
 
@@ -191,7 +198,7 @@ img, video {
   margin: 0 auto;
   border-radius: 5px;
   max-width: 100%;
-  max-height: 80vh;
+  /* max-height: 80vh; */
 }
 video { margin-bottom: 1rem; }
 
@@ -206,8 +213,8 @@ hr {
 }
 
 /* ---------- 常用类 ---------- */
-.title { font-size: 2rem; }
-.subtitle { font-size: 1.5rem; margin-left: 1rem; }
+.title { font-size: 1.4rem; }
+.subtitle { font-size: 1.25rem; margin-left: 1rem; }
 .small { font-size: 0.75rem; }
 .center { text-align: center; }
 .gap { margin: 4rem 0; }
@@ -226,7 +233,7 @@ hr {
 
 /* ---------- 内容区 ---------- */
 #content {
-  max-width: 50rem;
+  max-width: 45rem;
   margin: auto;
   margin-bottom: 2rem;
   padding: 1rem 1rem 0 1rem;
@@ -243,7 +250,8 @@ hr {
   max-width: 75rem;
   margin: auto;
   text-align: center;
-  font-family: "Fira Code";
+  font-size: 1.2rem;
+  font-family: "Fira Code", "monospace";
 }
 
 #top-nav a {

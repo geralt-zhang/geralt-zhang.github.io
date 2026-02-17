@@ -2,3 +2,8 @@
 .bundle/
 _site/
 .jekyll-metadata
+
+# Analytics data - privacy protection
+analytics-data/
+*.analytics.json
+site_analytics.*

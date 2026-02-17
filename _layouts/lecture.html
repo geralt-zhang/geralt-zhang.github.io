@@ -11,6 +11,35 @@ layout: default
 
 {{ content }}
 
+<div class="navigation">
+  {% assign sorted_posts = site.blob | where_exp: "post", "post.date" | sort: "date" %}
+  {% assign curr_index = -1 %}
+  
+  {% for post in sorted_posts %}
+    {% if post.url == page.url %}
+      {% assign curr_index = forloop.index %}
+    {% endif %}
+  {% endfor %}
+  
+  {% if curr_index > 1 %}
+    {% assign prev_idx = curr_index | minus: 1 %}
+    {% for post in sorted_posts %}
+      {% if forloop.index == prev_idx %}
+        <a href="{{ post.url }}" class="prev">← 上一篇: {{ post.title }}</a>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  
+  {% if curr_index > 0 and curr_index < sorted_posts.size %}
+    {% assign next_idx = curr_index | plus: 1 %}
+    {% for post in sorted_posts %}
+      {% if forloop.index == next_idx %}
+        <a href="{{ post.url }}" class="next">下一篇: {{ post.title }} →</a>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+
 <hr/>
 
 <script src="https://giscus.app/client.js"

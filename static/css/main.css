@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Noto+Serif+SC:wght@200..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 /* ---------- 颜色变量 ---------- */
 :root {
@@ -46,7 +47,7 @@
 
 html {
   font-size: 14px;
-  font-family:  "Noto Serif SC", sans-serif;
+  font-family:  "PT Serif", "Noto Serif SC", sans-serif;
   line-height: 1.35;
 }
 @media (min-width: 1024px) {
@@ -82,7 +83,7 @@ body {
 }
 
 #lecture-list{
-  font-family: "Fira Code";
+  font-family: "Roboto", sans-serif;
 }
 
 /* ---------- 标题 ---------- */
@@ -93,7 +94,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text);
 }
 
-h1 { font-size: 1.4rem; margin-top: 1rem; }
+h1 { font-size: 1.4rem; margin-top: 1rem;}
 h2 { font-size: 1.25rem; margin-top: 1rem; }
 h3 { font-size: 1rem; }
 h4 { font-size: 1rem; }
@@ -323,6 +324,47 @@ th {
   color: #333;
 }
 tr:hover { background: #f0f0f0; color: #000;}
+
+/* ---------- 博客导航 ---------- */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.navigation a {
+  padding: 0;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  color: var(--color-main);
+  text-decoration: underline;
+}
+
+.navigation .prev,
+.navigation .next {
+  color: var(--color-main);
+}
+
+.navigation .prev:hover,
+.navigation .next:hover {
+  background-color: transparent;
+  color: var(--color-link-hover-text);
+  background-color: var(--color-link-hover-bg);
+  text-decoration: underline;
+}
+
+.navigation .prev {
+  text-align: left;
+}
+
+.navigation .next {
+  text-align: right;
+}
 
 /* ---------- 打印 ---------- */
 @media print {

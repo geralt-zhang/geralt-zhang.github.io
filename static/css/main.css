@@ -6,6 +6,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+.ribbon a {
+  border: 1px solid #000;
+  color: #000;
+  display: block;
+  font-weight: bold;
+  font-size: 81.25%;
+  padding: 10px 50px;
+  text-align: center;
+  text-decoration: none;
+}
+
 /* ---------- 颜色变量 ---------- */
 :root {
   --color-main: #17007e;        /* 主色 */
@@ -390,40 +401,13 @@ tr:hover { background: #f0f0f0; color: #000;}
   box-shadow: 0px -1px 20px 0px #562c8c6b;
 }
 
-/* ---------- Simple Analytics Styles ---------- */
-#visit-stats {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: var(--analytics-bg, #0a0a0a);
-  color: var(--analytics-primary, #00ff00);
-  border: 1px solid var(--analytics-border, #00ff00);
-  padding: 8px 12px;
-  font-family: "Courier New", monospace;
-  font-size: 11px;
-  z-index: 1000;
-  pointer-events: none;
-  user-select: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 10px var(--analytics-shadow, rgba(0, 255, 0, 0.3));
-}
-
-/* Light mode analytics colors */
-@media (prefers-color-scheme: light) {
-  :root {
-    --analytics-bg: #f8f9fa;
-    --analytics-primary: #495057;
-    --analytics-border: #6c757d;
-    --analytics-shadow: rgba(108, 117, 125, 0.2);
-  }
-}
-
-/* Dark mode analytics colors */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --analytics-bg: #0a0a0a;
-    --analytics-primary: #00ff00;
-    --analytics-border: #00ff00;
-    --analytics-shadow: rgba(0, 255, 0, 0.3);
-  }
+.ribbon a {
+  border: 1px solid #000;
+  color: #000;
+  display: block;
+  font-weight: bold;
+  font-size: 81.25%;
+  padding: 10px 50px;
+  text-align: center;
+  text-decoration: none;
 }

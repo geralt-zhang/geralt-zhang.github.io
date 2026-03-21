@@ -1,14 +1,11 @@
 ---
 layout: lecture
-title: "Fox Game"
+title: "Godot 制作小狐狸游戏"
 date: 2025-04-14
 details: made by godot
 ready: true
 sync: true
 syncdate: 2025-04-14
-solution:
-    ready: true
-    url: game
 typora-root-url: ./..
 ---
 

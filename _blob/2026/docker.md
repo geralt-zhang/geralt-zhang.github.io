@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "Docker Impl"
+title: "Docker 的实现原理"
 date: 2026-02-14
 ready: true
 sync: true

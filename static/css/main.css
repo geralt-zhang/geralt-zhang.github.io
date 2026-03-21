@@ -1,10 +1,10 @@
 /* Copyright (c) 2017 Anish Athalye */
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Noto+Serif+SC:wght@200..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=LXGW+WenKai+TC:wght@300;400;700&family=Noto+Sans+Mono:wght@100..900&display=swap');
+
+@font-face {
+  font-family: 'TW-Sung';
+  src: url('/static/fonts/TW-Sung-98_1.ttf') format('truetype');
+}
 
 .ribbon a {
   border: 1px solid #000;
@@ -58,7 +58,7 @@
 
 html {
   font-size: 14px;
-  font-family:  "PT Serif", "Noto Serif SC", sans-serif;
+  font-family: "Times", "LXGW WenKai TC";
   line-height: 1.35;
 }
 @media (min-width: 1024px) {
@@ -80,7 +80,6 @@ body {
   flex-wrap: wrap;
   gap: 0.5em;
   justify-content: center;
-  font-family: "Fira Code";
 }
 
 #tag-list .tag {
@@ -93,16 +92,13 @@ body {
   color: var(--color-main);
 }
 
-#lecture-list{
-  font-family: "Roboto", sans-serif;
-}
-
 /* ---------- 标题 ---------- */
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
+  font-family: "TW-Sung", "LXGW WenKai TC";
   font-weight: bold;
   line-height: 1.25;
-  color: var(--color-text);
+  color: var(--color-main);
 }
 
 h1 { font-size: 1.4rem; margin-top: 1rem;}
@@ -134,7 +130,7 @@ pre {
   margin: 1rem 0;
   padding: 1rem;
   border: 1px dashed var(--color-border);
-  font-family: "Fira Code", Consolas;
+  font-size: 90%;
   align-items: start;
   gap: 0;
 }
@@ -162,7 +158,6 @@ pre > code::-webkit-scrollbar {
   border: none;
   cursor: pointer;
   opacity: 0;
-  font-family: "Roboto", sans-serif;
   font-size: 1.2rem;
   transition: all 0.2s ease;
   display: flex;
@@ -191,9 +186,9 @@ pre:hover .copy-button {
 }
 
 code {
-  font-family: "Fira Code", monospace;
   color: var(--color-accent);
   font-size: 90%;
+  font-family: "Noto Sans Mono", "LXGW WenKai TC";
 }
 
 pre code {
@@ -280,14 +275,15 @@ hr {
   max-width: 75rem;
   margin: auto;
   text-align: center;
-  font-size: 1.2rem;
-  font-family: "Fira Code", "monospace";
+  font-size: 1.25rem;
+  font-family: "Noto Sans Mono";
 }
 
 #top-nav a {
   color: var(--color-nav-text);
   text-decoration: none;
 }
+
 #top-nav a:hover {
   color: var(--color-nav-bg);
   background-color: var(--color-nav-text);

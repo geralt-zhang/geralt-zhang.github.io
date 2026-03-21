@@ -1,13 +1,13 @@
 ---
 layout: lecture
-title: "6.s081 Lab0"
+title: "6.s081 lab0 util"
 date: 2026-01-09
 ready: true
 sync: true
 syncdate: 2026-01-18
 ---
 
-## 调试：
+
 
 调试可以方便定位问题，由于使用 qemu 模拟硬件，因此启动 xv6 的调试需要通过 qemu-gdb，然后另一端 gdb 通过连接这个 qemu-gdb 运行的 kernel 来识别调试信息。
 
@@ -20,6 +20,8 @@ gdb-multiarch
 ```
 
 然而，要在 debug 时得心应手却并不那么简单，用户态的 main 处在虚拟地址 0，因此 b main 会造成 gdb 多次卡在 main 断点处，但只有第一次 b main 才是真正的进入函数。user 程序和 kernel 没法同时在 gdb 处理，需要使用 file kernel/kernel 和 file user/_xxx 在它们之间转换，即在加载到某一系统调用后，需要 file kernel/kernel，再在对应系统调用打断点。
+
+> 其实大多数时候不应该在 user/kernel 之间来回 debug，很容易混乱
 
 ## Lab: Xv6 and Unix utilities
 

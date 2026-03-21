@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "Gcov Use"
+title: "Gcov 近期使用总结"
 date: 2026-02-02
 ready: true
 ---
@@ -25,5 +25,5 @@ lcov -c -d . -o test.info
 genhtml test.info -o coverage_report
 ```
 
-这个过程就像是先绘制地图（gcno），再记录行程（gcda），最后用 lcov 整理成游记（info），最终生成 HTML 报告。
+这个过程就像是先绘制地图 (gcno)，再记录行程 (gcda)，最后用 lcov 整理成游记 (info)，最终生成 HTML 报告。
 

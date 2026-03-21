@@ -1,13 +1,13 @@
 ---
 layout: lecture
-title: "6.s081 Lab1 Syscall"
+title: "6.s081 lab1 syscall"
 date: 2026-03-16
 ready: true
 sync: true
 syncdate: 2026-03-16
 ---
 
-## Lab1-1
+## lab1.1: add trace for syscall()
 
 ```
 用户程序 → ecall指令 → 内核syscall()函数 → 具体系统调用函数 → 返回用户程序
@@ -20,17 +20,17 @@ syncdate: 2026-03-16
 核心组件:
 
 ```c
-/* 用户空间接口 */
+/* User space interface */
 
 // user/user.h
 int trace(int mask);
 
-// user/usys.pl - 生成系统调用存根
-entry("trace");  // 生成: li a7, SYS_trace; ecall; ret
+// user/usys.pl - Generate syscall stub
+entry("trace");  // Generate: li a7, SYS_trace; ecall; ret
 ```
 
 ```c
-/* 内核系统调用表 */
+/* Kernel syscall table */
 
 // kernel/syscall.h
 #define SYS_trace  22
@@ -38,17 +38,17 @@ entry("trace");  // 生成: li a7, SYS_trace; ecall; ret
 // kernel/syscall.c  
 static uint64 (*syscalls[])(void) = {
     [SYS_trace]   sys_trace,
-    // ... 其他系统调用
+    // ... other syscall
 };
 ```
 
 ```c
-// 进程结构扩展
+// Process structure extension
 
 // kernel/proc.h
 struct proc {
-    // ... 其他字段
-    int trace_mask;  // 跟踪掩码 - 新增字段
+    // ... other parameters
+    int trace_mask;  // Trace mask - new field
 };
 ```
 
@@ -59,11 +59,11 @@ sys_trace 函数
 // kernel/sysproc.c
 uint64 sys_trace(void) {
     int mask;
-    if(argint(0, &mask) < 0)  // 从用户空间获取mask参数
+    if(argint(0, &mask) < 0)  // Get mask parameter from user space
         return -1;
     
     struct proc *p = myproc();
-    p->trace_mask = mask;     // 设置进程的跟踪掩码
+    p->trace_mask = mask;     // Set process trace mask
     return 0;
 }
 ```
@@ -71,19 +71,19 @@ uint64 sys_trace(void) {
 fork 继承
 ```c
 // kernel/proc.c - fork()函数中
-np->trace_mask = p->trace_mask;  // 子进程继承父进程的trace_mask
+np->trace_mask = p->trace_mask;  // Child process inherits parent's trace_mask
 ```
 
 系统调用跟踪
 ```c
 // kernel/syscall.c
 void syscall(void) {
-    int num = p->trapframe->a7;  // 获取系统调用号
+    int num = p->trapframe->a7;  // Get syscall number
     
     if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-        p->trapframe->a0 = syscalls[num]();  // 执行系统调用
+        p->trapframe->a0 = syscalls[num]();  // Execute syscall
         
-        // 关键：检查是否需要跟踪
+        // Key: check if tracing is needed
         if (p->trace_mask & (1 << num)) {
             printf("%d: syscall %s -> %d\n", 
                    p->pid, syscall_names[num], p->trapframe->a0);

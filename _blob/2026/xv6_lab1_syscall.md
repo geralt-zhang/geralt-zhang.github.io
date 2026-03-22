@@ -5,6 +5,7 @@ date: 2026-03-16
 ready: true
 sync: true
 syncdate: 2026-03-16
+tags: Tutorial
 ---
 
 ## lab1.1: add trace for syscall()

@@ -1,10 +1,6 @@
 /* Copyright (c) 2017 Anish Athalye */
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=LXGW+WenKai+TC:wght@300;400;700&family=Noto+Sans+Mono:wght@100..900&display=swap');
-
-@font-face {
-  font-family: 'TW-Sung';
-  src: url('/static/fonts/TW-Sung-98_1.ttf') format('truetype');
-}
+@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
 
 .ribbon a {
   border: 1px solid #000;
@@ -35,7 +31,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-main: #72eaff;
-    --color-accent: #F92672;
+    --color-accent: #ff6da2;
     --color-bg: #303030;
     --color-text: #dddddd;
     --color-muted: #aaaaaa;
@@ -73,7 +69,7 @@ body {
 }
 
 /* ---------- 标签样式 ---------- */
-#tag-list {
+#folder-tag-list {
   margin-bottom: 1em;
   list-style: none;
   display: flex;
@@ -82,20 +78,24 @@ body {
   justify-content: center;
 }
 
-#tag-list .tag {
+#folder-tag-list li {
+  margin-bottom: 1em;
+}
+
+#folder-tag-list .tag {
   cursor: pointer;
   color: var(--color-muted);
   transition: 0.2s;
 }
 
-#tag-list .active {
+#folder-tag-list .active {
   color: var(--color-main);
 }
 
 /* ---------- 标题 ---------- */
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
-  font-family: "TW-Sung", "LXGW WenKai TC";
+  font-family: "Times", "SimSun";
   font-weight: bold;
   line-height: 1.25;
   color: var(--color-main);
@@ -150,6 +150,7 @@ pre > code::-webkit-scrollbar {
 
 .copy-button {
   position: relative;
+  font-family: "SimSun";
   width: 1.2rem;
   height: 1.2rem;
   padding: 0;
@@ -188,7 +189,7 @@ pre:hover .copy-button {
 code {
   color: var(--color-accent);
   font-size: 90%;
-  font-family: "Noto Sans Mono", "LXGW WenKai TC";
+  font-family: "DM Mono";
 }
 
 pre code {
@@ -223,6 +224,7 @@ img, video {
   margin: 0 auto;
   border-radius: 5px;
   max-width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   /* max-height: 80vh; */
 }
 video { margin-bottom: 1rem; }
@@ -276,7 +278,8 @@ hr {
   margin: auto;
   text-align: center;
   font-size: 1.25rem;
-  font-family: "Noto Sans Mono";
+  font-weight: bold;
+  font-family: "SimSun";
 }
 
 #top-nav a {
@@ -366,11 +369,11 @@ tr:hover { background: #f0f0f0; color: #000;}
 }
 
 .navigation .prev {
-  text-align: left;
+  margin-right: auto;
 }
 
 .navigation .next {
-  text-align: right;
+  margin-left: auto;
 }
 
 /* ---------- 打印 ---------- */

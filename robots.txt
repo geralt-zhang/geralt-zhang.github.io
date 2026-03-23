@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://geralt-zhang.github.io/sitemap.xml
+Sitemap: https://zhehuaf.github.io/sitemap.xml

@@ -7,3 +7,4 @@ _site/
 analytics-data/
 *.analytics.json
 site_analytics.*
+.DS_Store

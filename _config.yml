@@ -1,8 +1,8 @@
 # Setup
-title: '河边的西瓜'
+title: "zhehua's blog"
 url: "https://zhehuaf.github.io/"
 baseurl:
-description: '技术博客，分享操作系统、编程相关内容'
+description: '个人博客，分享操作系统、编程相关内容'
 
 # Settings
 markdown: kramdown

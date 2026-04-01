@@ -81,11 +81,74 @@ file user/_程序名
 
 程序需要接收命令行参数，使用 `argc` 和 `argv` 处理。`argc` 是参数数量，`argv` 是参数数组。参数通过 shell 传递给程序。
 
-sleep 程序的实现步骤：
+`user/sleep.c` 程序的实现步骤：
+
 1. 使用 `atoi` 将字符串参数转换为整数时间
 2. 调用系统调用 `sleep()` 传入时间参数
 3. 系统调用 `sys_sleep()` 将当前进程状态设置为 SLEEPING 并挂起到等待队列
 4. 时间到达后进程被唤醒
+
+这很简单，但我想知道 Kernel 在这期间都做了什么，首先会走到 `sys_sleep()` 这个系统调用。
+
+```c
+uint64 sys_sleep(void)
+{
+	int n;	// times from user/sleep.c
+	uint ticks0;
+
+	if (argint(0, &n) < 0)
+		return -1;
+	acquire(&tickslock);
+	ticks0 = ticks;	// global time counter
+	while (ticks - ticks0 < n) {	// sleep until > times
+		if (myproc()->killed) {
+			release(&tickslock);
+			return -1;
+		}
+		sleep(&ticks, &tickslock);
+	}
+	release(&tickslock);
+	return 0;
+}
+```
+
+其中 `tickslock` 是一个自旋锁，专门用来保护全局变量 `ticks`，这个变量是 timer interrupt 的计数，并且 timer interrupt 是固定频率触发的，类似玩游戏时候的“帧”概念，真实时间 = ticks × 每个 tick 的时间长度。
+
+真正执行 sleep 的逻辑在 `kernel/proc.c` 的 `sleep()` 中。
+
+```c
+// Atomically release lock and sleep on chan.
+// Reacquires lock when awakened.
+void sleep(void *chan, struct spinlock *lk)
+{
+	struct proc *p = myproc();
+
+	// Must acquire p->lock in order to
+	// change p->state and then call sched.
+	// Once we hold p->lock, we can be
+	// guaranteed that we won't miss any wakeup
+	// (wakeup locks p->lock),
+	// so it's okay to release lk.
+
+	acquire(&p->lock); //DOC: sleeplock1
+	release(lk);
+
+	// Go to sleep.
+	p->chan = chan;
+	p->state = SLEEPING;
+
+	sched();
+
+	// Tidy up.
+	p->chan = 0;
+
+	// Reacquire original lock.
+	release(&p->lock);
+	acquire(lk);
+}
+```
+
+
 
 ## 参考资源
 

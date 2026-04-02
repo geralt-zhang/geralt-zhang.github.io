@@ -3,96 +3,33 @@
   <url>
     <loc>https://zhehuaf.github.io/</loc>
     <lastmod>2026-04-02</lastmod>
-    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://zhehuaf.github.io/about/</loc>
     <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/license/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://zhehuaf.github.io/blob/</loc>
     <lastmod>2026-04-02</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/blob/2025/game/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/blob/2026/alu/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/blob/2026/docker/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/blob/2026/gcov-use/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/blob/2026/llm/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://zhehuaf.github.io/blob/2026/mail_client/</loc>
     <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://zhehuaf.github.io/blob/2026/notice/</loc>
+    <loc>https://zhehuaf.github.io/blob/2026/llm/</loc>
     <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://zhehuaf.github.io/blob/2026/docker/</loc>
+    <lastmod>2026-04-02</lastmod>
   </url>
   <url>
     <loc>https://zhehuaf.github.io/blob/2026/xv6_lab0_util/</loc>
     <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://zhehuaf.github.io/blob/2026/xv6_lab1_syscall/</loc>
     <lastmod>2026-04-02</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/saveold/2025/disk/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/saveold/2025/env_issue_spdk/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/saveold/2025/mit6.s081-lab/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/saveold/2025/nvme/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/saveold/2025/plotly/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://zhehuaf.github.io/saveold/2025/spdk/</loc>
-    <lastmod>2026-04-02</lastmod>
-    <priority>0.6</priority>
   </url>
 </urlset>

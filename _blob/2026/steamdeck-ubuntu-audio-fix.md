@@ -1,8 +1,9 @@
 ---
 title: "Steam Deck安装Ubuntu后无声问题解决全记录"
 date: 2026-04-07
-categories: ["技术笔记", "Linux"]
-tags: ["Steam Deck", "Ubuntu", "音频修复", "Linux"]
+ready: true
+sync: true
+tags: ["Linux"]
 ---
 
 ## 问题描述

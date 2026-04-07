@@ -84,7 +84,9 @@ irb(main):006:0> Math.sin(3.14159 / 2)
 
 **运行环境**: Jekyll 本身就是 Ruby 程序，没有 Ruby 解释器它根本跑不起来
 
-**依赖管理**: 通过 RubyGems 安装 Jekyll 和各种插件，就像 npm 之于 Node.js。Gemfile 定义项目依赖：
+**依赖管理**: 通过 RubyGems 安装 Jekyll 和各种插件，就像 npm 之于 Node.js。
+
+Gemfile 定义项目依赖：
 
 ```ruby
 source 'https://rubygems.org'

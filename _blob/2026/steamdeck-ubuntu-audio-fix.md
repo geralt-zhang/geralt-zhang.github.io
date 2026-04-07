@@ -1,4 +1,5 @@
 ---
+layout: lecture
 title: "Steam Deck安装Ubuntu后无声问题解决全记录"
 date: 2026-04-07
 ready: true

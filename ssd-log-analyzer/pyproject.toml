@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssd-log-analyzer"
+version = "0.1.0"
+description = "SSD Test Log and Firmware Log Analyzer with Root Cause Analysis"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Hua", email = "hua24@example.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Logging",
+    "Topic :: System :: Monitoring",
+    "Topic :: Utilities"
+]
+
+[project.urls]
+Homepage = "https://github.com/zhehuaf/ssd-log-analyzer"
+
+[project.scripts]
+ssd-log-analyzer = "scripts.log_parser:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scripts*", "config*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 88

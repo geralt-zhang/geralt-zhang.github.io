@@ -171,13 +171,153 @@ Steam Deck的音频系统与普通PC不同：
 - **PCM源**：必须设置为 `DSP` 而不是 `ASP`，这样才能使用DSP处理后的音频
 - **音量层级**：数字音量、模拟音量、数字PCM音量需要特定的值才能正常工作
 
-### 为什么重启后可能失效？
+### 永久配置方案（重启不失效果）
 
-这些配置是运行时配置，重启后可能会丢失。要永久解决，可以考虑：
+为了让配置在重启后依然有效，有以下几种方法：
 
-1. 创建systemd服务在启动时自动配置
-2. 修改ALSA UCM配置文件
-3. 创建udev规则在设备连接时自动配置
+#### 方案一：创建systemd用户服务（推荐）
+
+1. **创建修复脚本**：
+   ```bash
+   # 创建脚本文件
+   cat > ~/.local/bin/steamdeck-audio-fix.sh << 'EOF'
+   #!/bin/bash
+   echo "Applying Steam Deck audio fix..."
+   sleep 2
+   amixer -c 2 sset "Digital" 192
+   amixer -c 2 sset "Left Analog PCM" 17
+   amixer -c 2 sset "Right Analog PCM" 17
+   amixer -c 2 sset "Left Digital PCM" 870
+   amixer -c 2 sset "Right Digital PCM" 870
+   amixer -c 2 sset "Headphone" on
+   amixer -c 2 sset "Headphone" 2
+   amixer -c 2 sset "Mic" 252
+   amixer -c 2 sset "Frontend PGA" 27
+   amixer -c 2 sset "Left DSP RX1 Source" "ASPRX1"
+   amixer -c 2 sset "Right DSP RX1 Source" "ASPRX2"
+   amixer -c 2 sset "Left DSP RX2 Source" "ASPRX1"
+   amixer -c 2 sset "Right DSP RX2 Source" "ASPRX2"
+   amixer -c 2 sset "Left PCM Source" "DSP"
+   amixer -c 2 sset "Right PCM Source" "DSP"
+   sleep 1
+   pactl set-default-sink alsa_output.pci-0000_04_00.5-platform-acp5x_mach.0.HiFi__hw_acp5x_1__sink 2>/dev/null || true
+   pactl set-sink-volume @DEFAULT_SINK@ 100% 2>/dev/null || true
+   pactl set-sink-mute @DEFAULT_SINK@ 0 2>/dev/null || true
+   echo "Steam Deck audio fix applied"
+   EOF
+   
+   # 添加执行权限
+   chmod +x ~/.local/bin/steamdeck-audio-fix.sh
+   ```
+
+2. **创建systemd服务**：
+   ```bash
+   # 创建服务文件
+   mkdir -p ~/.config/systemd/user/
+   cat > ~/.config/systemd/user/steamdeck-audio-fix.service << EOF
+   [Unit]
+   Description=Fix Steam Deck audio configuration
+   After=pipewire.service pipewire-pulse.service wireplumber.service
+   Wants=pipewire.service pipewire-pulse.service wireplumber.service
+   
+   [Service]
+   Type=oneshot
+   RemainAfterExit=yes
+   ExecStart=/home/\$USER/.local/bin/steamdeck-audio-fix.sh
+   ExecStop=/bin/true
+   
+   [Install]
+   WantedBy=default.target
+   EOF
+   
+   # 启用服务
+   systemctl --user daemon-reload
+   systemctl --user enable --now steamdeck-audio-fix.service
+   ```
+
+#### 方案二：创建ALSA UCM配置文件
+
+创建ALSA Use Case Manager配置文件：
+```bash
+sudo mkdir -p /usr/share/alsa/ucm2/conf.d/steamdeck/
+sudo tee /usr/share/alsa/ucm2/conf.d/steamdeck/steamdeck.conf << 'EOF'
+# Steam Deck ACP5x audio configuration
+SectionVerb {
+	EnableSequence [
+		cdev "hw:acp5x"
+		cset "name='Digital Playback Volume' 192"
+		cset "name='Left Analog Playback Volume' 17"
+		cset "name='Right Analog Playback Volume' 17"
+		cset "name='Left Digital Playback Volume' 870"
+		cset "name='Right Digital Playback Volume' 870"
+		cset "name='Headphone Playback Switch' on"
+		cset "name='Headphone Playback Volume' 2"
+		cset "name='Mic Capture Volume' 252"
+		cset "name='Frontend PGA Volume' 27"
+		cset "name='Left DSP RX1 Source' ASPRX1"
+		cset "name='Right DSP RX1 Source' ASPRX2"
+		cset "name='Left DSP RX2 Source' ASPRX1"
+		cset "name='Right DSP RX2 Source' ASPRX2"
+		cset "name='Left PCM Source' DSP"
+		cset "name='Right PCM Source' DSP"
+	]
+}
+EOF
+```
+
+#### 方案三：创建udev规则
+
+创建udev规则在设备连接时自动配置：
+```bash
+sudo tee /etc/udev/rules.d/91-steamdeck-audio.rules << 'EOF'
+# Steam Deck audio fix
+ACTION=="add", SUBSYSTEM=="sound", ATTRS{vendor}=="0x1022", ATTRS{device}=="0x15e2", RUN+="/usr/local/bin/steamdeck-audio-fix.sh"
+EOF
+
+sudo udevadm control --reload-rules
+```
+
+#### 方案四：一键安装脚本（推荐）
+
+下载并运行一键安装脚本：
+```bash
+# 下载脚本
+wget https://raw.githubusercontent.com/zhehuaf/steamdeck-audio-fix/main/steamdeck-audio-permanent-fix.sh
+
+# 运行脚本（需要sudo权限）
+chmod +x steamdeck-audio-permanent-fix.sh
+sudo ./steamdeck-audio-permanent-fix.sh
+```
+
+或者手动创建脚本：
+```bash
+# 创建一键安装脚本
+cat > steamdeck-audio-permanent-fix.sh << 'EOF'
+#!/bin/bash
+# Steam Deck Audio Permanent Fix Script
+# ... (脚本内容见上文)
+EOF
+
+chmod +x steamdeck-audio-permanent-fix.sh
+sudo ./steamdeck-audio-permanent-fix.sh
+```
+
+#### 验证配置
+
+重启后验证配置是否生效：
+```bash
+# 检查systemd服务状态
+systemctl --user status steamdeck-audio-fix.service
+
+# 检查ALSA配置
+amixer -c 2 contents | grep -E "(Digital|Analog PCM|Digital PCM|DSP RX|PCM Source)"
+
+# 测试音频
+speaker-test -t sine -f 440 -c 2 -l 1
+
+# 查看日志
+journalctl --user -u steamdeck-audio-fix.service -f
+```
 
 ## 常见问题排查
 

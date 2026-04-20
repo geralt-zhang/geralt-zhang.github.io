@@ -1,6 +1,11 @@
 /* Copyright (c) 2017 Anish Athalye */
-@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
+@font-face {
+  font-family: "WenKai";
+  src: url("/static/fonts/LXGWWenKaiGB-Regular.ttf") format("truetype");
+  font-display: swap;
+}
 
 .ribbon a {
   border: 1px solid #000;
@@ -53,12 +58,11 @@
 }
 
 html {
-  font-size: 14px;
-  font-family: "Times", "LXGW WenKai TC";
+  font-family: "Times", "WenKai";
   line-height: 1.35;
 }
 @media (min-width: 1024px) {
-  html { font-size: 14pt; }
+  html { font-size: 16pt; }
 }
 
 body {
@@ -95,7 +99,6 @@ body {
 /* ---------- 标题 ---------- */
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
-  font-family: "Times", "SimSun";
   font-weight: bold;
   line-height: 1.25;
   color: var(--color-main);

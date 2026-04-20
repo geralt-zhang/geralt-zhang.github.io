@@ -60,9 +60,11 @@
 html {
   font-family: "Times", "WenKai";
   line-height: 1.35;
+  font-size: 16pt;
 }
-@media (min-width: 1024px) {
-  html { font-size: 16pt; }
+
+@media (max-width: 480px) {
+  html { font-size: 14pt; }
 }
 
 body {

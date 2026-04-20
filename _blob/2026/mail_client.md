@@ -8,11 +8,11 @@ syncdate: 2026-03-24
 typora-root-url: ./..
 ---
 
-工作了之后发现互联网上正经交流主要靠邮件，不管是公司事项通知、申请、或是开源项目如 Linux 内核等等的合作开发，都要用邮件来沟通，之前因为不知道可以自己配置，下载了好几个邮件客户端，打开起来非常费劲，并且很多都是垃圾邮件，所以兴趣不大，偶然间用到 apple 的邮件 app 以及看到 `hackermail` 这个项目，才开始正经的用上邮件，`hackermail`是由一些内核黑客为了方便邮件交流开发出来的终端邮件客户端，官方链接：https://github.com/sjp38/hackermail
+工作了之后发现互联网上正经交流主要靠邮件，不管是公司事项通知、申请、或是开源项目如 Linux 内核等等的合作开发，都要用邮件来沟通，之前因为不知道可以自己配置，下载了好几个邮件客户端，打开起来非常费劲，并且很多都是垃圾邮件，所以兴趣不大，偶然间用到 apple 的邮件 app 以及看到 `hackermail` 这个项目，才开始正经的用上邮件，`hackermail` 是由一些内核黑客为了方便邮件交流开发出来的终端邮件客户端，官方链接：https://github.com/sjp38/hackermail
 
 ![interactive list](/../static/media/hkml_interactive_list_demo-20260324230600146.gif)
 
-使用`hackmail`需要首先初始化
+使用 `hackmail` 需要首先初始化
 
 ```bash
 ./hkml init

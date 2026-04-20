@@ -1,6 +1,6 @@
 ---
 layout: lecture
-title: "Steam Deck安装Ubuntu后无声问题解决全记录"
+title: "Steam Deck无声问题"
 date: 2026-04-07
 ready: true
 sync: true
@@ -9,17 +9,17 @@ tags: ["Linux"]
 
 ## 问题描述
 
-最近在Steam Deck上安装了Ubuntu系统，安装完成后发现一个奇怪的问题：系统完全没有声音。无论是播放音乐、视频还是系统提示音，都听不到任何声音。系统显示音频设备正常识别，音量设置也正常，但就是没有声音输出。
+最近在 Steam Deck 上安装了 Ubuntu 系统，安装完成后发现一个奇怪的问题：系统完全没有声音。无论是播放音乐、视频还是系统提示音，都听不到任何声音。系统显示音频设备正常识别，音量设置也正常，但就是没有声音输出。
 
 ## 问题根源
 
-经过深入排查，发现问题的根源在于Steam Deck特殊的音频硬件架构：
+经过深入排查，发现问题的根源在于 Steam Deck 特殊的音频硬件架构：
 
-1. **特殊的音频芯片**：Steam Deck使用了AMD ACP5x音频协处理器，配合Cirrus Logic CS35L41音频放大器
-2. **DSP固件依赖**：音频输出需要加载特定的DSP固件和配置
+1. **特殊的音频芯片**：Steam Deck 使用了 AMD ACP5x 音频协处理器，配合 Cirrus Logic CS35L41 音频放大器
+2. **DSP 固件依赖**：音频输出需要加载特定的DSP固件和配置
 3. **复杂的路由配置**：音频信号需要经过特定的DSP路由才能正确输出
 
-简单来说，Steam Deck的音频不是简单的"声卡驱动"，而是一个需要特定配置的音频处理系统。
+简单来说，Steam Deck 的音频不是简单的声卡驱动，而是一个需要特定配置的音频处理系统。
 
 ## 解决方案
 
@@ -79,7 +79,7 @@ amixer -c 2 sset 'Left PCM Source' 'DSP'
 amixer -c 2 sset 'Right PCM Source' 'DSP'
 ```
 
-### 4. 配置PulseAudio
+### 4. 配置 PulseAudio
 
 设置默认音频输出设备：
 
@@ -159,11 +159,11 @@ chmod +x fix_steamdeck_audio.sh
 
 ### 为什么需要手动配置？
 
-Steam Deck的音频系统与普通PC不同：
+Steam Deck 的音频系统与普通 PC 不同：
 
-1. **音频协处理器**：使用AMD ACP5x作为音频协处理器，而不是传统的HD Audio
-2. **智能放大器**：使用Cirrus Logic CS35L41，这是一个需要DSP固件的智能放大器
-3. **复杂路由**：音频信号需要经过：CPU → ACP5x → DSP处理 → CS35L41放大器 → 扬声器
+1. **音频协处理器**：使用 AMD ACP5x 作为音频协处理器，而不是传统的 HD Audio
+2. **智能放大器**：使用 Cirrus Logic CS35L41，这是一个需要DSP固件的智能放大器
+3. **复杂路由**：音频信号需要经过：CPU → ACP5x → DSP 处理 → CS35L41 放大器 → 扬声器
 
 ### 关键配置项说明
 
@@ -175,7 +175,7 @@ Steam Deck的音频系统与普通PC不同：
 
 为了让配置在重启后依然有效，有以下几种方法：
 
-#### 方案一：创建systemd用户服务（推荐）
+#### 方案一：创建 systemd 用户服务（推荐）
 
 1. **创建修复脚本**：
    ```bash
@@ -265,9 +265,9 @@ SectionVerb {
 EOF
 ```
 
-#### 方案三：创建udev规则
+#### 方案三：创建 udev 规则
 
-创建udev规则在设备连接时自动配置：
+创建 udev 规则在设备连接时自动配置：
 ```bash
 sudo tee /etc/udev/rules.d/91-steamdeck-audio.rules << 'EOF'
 # Steam Deck audio fix

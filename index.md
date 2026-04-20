@@ -1,6 +1,6 @@
 ---
 layout: page
-title: zhehua's blog
+title: Zhehua's Blog
 ---
 
 这个网页是基于 Missing 一课的模板改的，这是基于 Jellky 的 Github Page，

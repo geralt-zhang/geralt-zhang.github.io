@@ -7,10 +7,22 @@ sync: true
 syncdate: 2026-01-18
 tags: 6.s081
 ---
+GCC (GNU Compiler Collection) 和  LLVM 往往代表两种索引代码的方式，GCC 是一个编译器，它不会关心怎么跳转代码，LLVM 则代表一种前后段处理的方式，其搭配 Clang 实现 LSP（Language Server Protocol，语言服务器协议），我的理解它通过编译后的结果（语法和语义信息）来指导编辑器跳转代码符号。
 
-## Clangd & XV6 环境设置
+虽然 LSP 很厉害，但它搭配 GCC 有一些莫名其妙的警告和 ERR，这些报错应当是 GCC 与 LLVM 的差异导致的，而不用 LSP 的话，可以用 GCC + Ctags / Cscope 这种方式来索引代码，这本质上是通过正则搜索来实现的，因此它往往没那么精准，以下是通过配置 NVim 插件实现的 Cscope 功能跳转。
 
-Clangd 是基于 LLVM 的语言服务器，可以让编辑器理解 C/C++ 代码，提供补全、跳转、查找引用和错误提示等功能。在大多数项目里，它就像一个贴身助手，帮你快速浏览和修改代码。但把它用到 XV6 教学操作系统上就没那么简单。XV6 是为教学设计的 RISC-V 内核，它有自己的头文件、自定义的库函数，还有一些早期 C 的写法，这些在现代编译器眼里往往不规范。Clangd 默认理解的是宿主机环境和标准 C，而 XV6 既有内核代码也有用户程序，还有工具链本身，这些都不在它熟悉的世界里。加上 XV6 的 Makefile 不会生成 Clangd 需要的编译数据库，直接用的话会报一堆莫名其妙的错误。要让 Clangd 在 XV6 项目里顺利工作，必须做一些配置，让它学会理解这个小而古老但完整的操作系统世界。
+```bash
+ctags -R
+cscope -Rbq
+```
+
+<script src="https://asciinema.org/a/UW1ZUHRzyvfKqo6j.js" id="asciicast-UW1ZUHRzyvfKqo6j" async="true"></script>
+
+Clangd 是基于 LLVM 的语言服务器，可以让编辑器理解 C/C++ 代码，提供补全、跳转、查找引用和错误提示等功能。但把它用到 XV6 教学操作系统上就没那么简单。XV6 是为教学设计的 RISC-V 内核，它有自己的头文件、自定义的库函数，还有一些早期 C 的写法，这些在现代编译器眼里往往不规范。
+
+Clangd 默认理解的是宿主机环境和标准 C，而 XV6 既有内核代码也有用户程序，还有工具链本身，这些都不在它熟悉的世界里。加上 XV6 的 Makefile 不会生成 Clangd 需要的编译数据库，直接用的话会报一堆莫名其妙的错误。要让 Clangd 在 XV6 项目里顺利工作，必须做一些配置。
+
+## 配置 Clangd
 
 首先安装 Bear，这是一个用来生成 `compile_commands.json` 的工具：
 
@@ -18,13 +30,12 @@ Clangd 是基于 LLVM 的语言服务器，可以让编辑器理解 C/C++ 代码
 sudo apt install bear
 ```
 
-安装 Clangd，你可以直接用包管理器，也可以下载 LLVM 官方版本：
+安装 Clangd，可以直接用包管理器，也可以下载 LLVM 官方版本：
+> 安装完成后，可以用 `clangd --version` 检查版本。
 
 ```
 sudo apt install clangd-16
 ```
-
-> 安装完成后，可以用 `clangd --version` 检查版本。
 
 进入 XV6 根目录，然后用 Bear 包裹 Make 命令生成编译数据库：
 
@@ -34,7 +45,7 @@ bear -- make
 
 生成的 `compile_commands.json` 文件会记录项目里每个源文件的编译选项，包括 include 路径、宏定义和编译器参数，这样 Clangd 就能正确理解代码。
 
-然而由于 xv6 的代码编写风格较古老，clangd 解析经常报红，搞了一晚上也没搞好，因此我不再使用 clangd 的语法检测功能，只使用它的跳转功能，在 `.clangd` 文件中配置如下，去你的吧:)
+然而由于 xv6 的代码编写风格较古老，clangd 解析经常报红，搞了一晚上也没搞好，因此我不再使用 clangd 的语法检测功能，只使用它的跳转功能，在 `.clangd` 文件中配置如下，可禁用大部分警告。
 
 ```yaml
 Diagnostics:

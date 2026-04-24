@@ -30,11 +30,9 @@ Clangd 默认理解的是宿主机环境和标准 C，而 XV6 既有内核代码
 sudo apt install bear
 ```
 
-安装 Clangd，可以直接用包管理器，也可以下载 LLVM 官方版本：
-> 安装完成后，可以用 `clangd --version` 检查版本。
-
+安装 Clangd，可以直接用包管理器，也可以下载 LLVM 官方版本，安装完成后，可以用 `clangd --version` 检查版本。
 ```
-sudo apt install clangd-16
+sudo apt install clangd-18
 ```
 
 进入 XV6 根目录，然后用 Bear 包裹 Make 命令生成编译数据库：
@@ -45,11 +43,22 @@ bear -- make
 
 生成的 `compile_commands.json` 文件会记录项目里每个源文件的编译选项，包括 include 路径、宏定义和编译器参数，这样 Clangd 就能正确理解代码。
 
-然而由于 xv6 的代码编写风格较古老，clangd 解析经常报红，搞了一晚上也没搞好，因此我不再使用 clangd 的语法检测功能，只使用它的跳转功能，在 `.clangd` 文件中配置如下，可禁用大部分警告。
+然而由于 xv6 的代码编写风格较古老，Clangd 解析经常报红，搞了一晚上也没搞好，因此我不再使用 Clangd 的语法检测功能，只使用它的跳转功能，在 `.clangd` 文件中配置如下，可禁用大部分警告。
 
 ```yaml
 Diagnostics:
   Suppress: "*"
+```
+
+但如果 clangd 本身因为太多崩掉，仍然会在文件开始报 `Too many fails xxx`，要禁用这些警告，还需要在 ~/.config/nvim/init.lua 里配置一下。
+
+```bash
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local client = args.data and vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.name == 'clangd' then vim.diagnostic.enable(false, { bufnr = args.buf }) end
+  end,
+})
 ```
 
 ## GDB 调试步骤
@@ -64,13 +73,7 @@ make qemu-gdb CPUS=1
 gdb-multiarch
 ```
 
-调试过程中需要注意以下几个问题：
-
-### 断点设置问题
-
 用户态程序的 `main` 函数位于虚拟地址 0，使用 `b main` 设置断点时会导致 GDB 多次在同一位置停止。只有第一次是真正的函数入口，后续停止是地址重复导致的。
-
-### 用户态和内核态切换
 
 XV6 的用户程序和内核程序需要在 GDB 中分别加载：
 
@@ -88,7 +91,7 @@ file user/_程序名
 
 这个实验主要学习系统调用的使用。很多函数的实现可以参考作业页面提供的用户程序示例，重点是理解用户态和内核态之间的转换过程。
 
-## 1. Sleep 调用
+### Sleep 调用
 
 程序需要接收命令行参数，使用 `argc` 和 `argv` 处理。`argc` 是参数数量，`argv` 是参数数组。参数通过 shell 传递给程序。
 
@@ -99,67 +102,17 @@ file user/_程序名
 3. 系统调用 `sys_sleep()` 将当前进程状态设置为 SLEEPING 并挂起到等待队列
 4. 时间到达后进程被唤醒
 
-这很简单，但我想知道 Kernel 在这期间都做了什么，首先会走到 `sys_sleep()` 这个系统调用。
+用户层通过系统调用完成睡眠，但 Kernel 在这期间都做了什么呢？
 
-```c
-uint64 sys_sleep(void)
-{
-	int n;	// times from user/sleep.c
-	uint ticks0;
+1. 代码通过系统调用，kernel 首先进入 `sys_sleep()` 函数响应，在这个函数里会先获取全局 `tickslock` 锁，然后 while 检测时间差，在循环里检测当前进程是否被请求杀掉，如果被请求杀死，会尽快释放全局时间帧锁，否则才进入 `sleep()` 流程。
 
-	if (argint(0, &n) < 0)
-		return -1;
-	acquire(&tickslock);
-	ticks0 = ticks;	// global time counter
-	while (ticks - ticks0 < n) {	// sleep until > times
-		if (myproc()->killed) {
-			release(&tickslock);
-			return -1;
-		}
-		sleep(&ticks, &tickslock);
-	}
-	release(&tickslock);
-	return 0;
-}
-```
+2. 在 `sleep()` 函数里面会获取当前进程 `p` 以及它的进程锁 `lock`，获取到 `lock` 后会释放那个全局 `tickslock` 锁（这是为了避免死锁，让其他进程有机会推进唤醒条件，因为时钟中断本质上也需要这个锁才能更新系统 `ticks`，如果不释放，这个锁就在 `sleep()` 里面，循环永远也出不来。
 
-其中 `tickslock` 是一个自旋锁，专门用来保护全局变量 `ticks`，这个变量是 timer interrupt 的计数，并且 timer interrupt 是固定频率触发的，类似玩游戏时候的“帧”概念，真实时间 = ticks × 每个 tick 的时间长度。
+3. 那么为什么要先拿 `p->lock`，再释放 `tickslock` 呢？因为有一个 `wakeup()` 也会抢进程的锁，假如说睡眠流程不抢这个锁，如果 p 还没设置状态 sleeping，这时时钟中断函数调用 `wakeup()`，但唤醒的时候发现进程还是 running，它就会把刚刚的那个进程给跳过。
 
-真正执行 sleep 的逻辑在 `kernel/proc.c` 的 `sleep()` 中。
+4. 我一直以为跳过一次没事，等下次时钟硬件中断再来一波 `wakeup()` 就行，这也许对等待时钟的睡眠有用，但如果有进程等待其他事件，例如硬盘、网络，丢失一次 `chan` 就永远找不到了，因为它们的电信号往往不会重复触发，那这样进程就会永远睡下去，无人唤醒。
 
-```c
-// Atomically release lock and sleep on chan.
-// Reacquires lock when awakened.
-void sleep(void *chan, struct spinlock *lk)
-{
-	struct proc *p = myproc();
-
-	// Must acquire p->lock in order to
-	// change p->state and then call sched.
-	// Once we hold p->lock, we can be
-	// guaranteed that we won't miss any wakeup
-	// (wakeup locks p->lock),
-	// so it's okay to release lk.
-
-	acquire(&p->lock); //DOC: sleeplock1
-	release(lk);
-
-	// Go to sleep.
-	p->chan = chan;
-	p->state = SLEEPING;
-
-	sched();
-
-	// Tidy up.
-	p->chan = 0;
-
-	// Reacquire original lock.
-	release(&p->lock);
-	acquire(lk);
-}
-```
-
-
+后续分析 `sched()`。
 
 ## 参考资源
 

@@ -1,0 +1,30 @@
+function initCopyButtons() {
+  const codeBlocks = document.querySelectorAll('pre');
+
+  codeBlocks.forEach((block) => {
+    const button = document.createElement('button');
+    button.className = 'copy-button';
+    button.innerHTML = '⎘';
+    button.setAttribute('aria-label', 'Copy code');
+    button.setAttribute('title', 'Copy code');
+    block.appendChild(button);
+
+    button.addEventListener('click', async () => {
+      const code = block.querySelector('code')?.textContent || block.textContent;
+      try {
+        await navigator.clipboard.writeText(code);
+        button.innerHTML = '√';
+        button.classList.add('copied');
+        setTimeout(() => {
+          button.innerHTML = '⎘';
+          button.classList.remove('copied');
+        }, 2500);
+      } catch (err) {
+        console.error('复制失败:', err);
+        button.innerHTML = 'x';
+      }
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initCopyButtons);

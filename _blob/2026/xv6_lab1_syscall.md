@@ -8,106 +8,12 @@ syncdate: 2026-03-16
 tags: 6.s081
 ---
 
-## lab1.1: add trace for syscall()
+在操作系统实验中，理解用户态与内核态的边界跨越是掌握微内核或宏内核架构的关键。以 6.s081 实验中的 trace 系统调用为例，其本质是构建一个贯穿用户空间、陷阱处理层、内核分发层以及进程控制块的闭环数据流。
 
-```
-用户程序 → ecall指令 → 内核syscall()函数 → 具体系统调用函数 → 返回用户程序
-```
-
-- **a7**: 系统调用号
-- **a0-a6**: 系统调用参数
-- **a0**: 返回值
-
-核心组件:
-
-```c
-/* User space interface */
-
-// user/user.h
-int trace(int mask);
-
-// user/usys.pl - Generate syscall stub
-entry("trace");  // Generate: li a7, SYS_trace; ecall; ret
-```
-
-```c
-/* Kernel syscall table */
-
-// kernel/syscall.h
-#define SYS_trace  22
-
-// kernel/syscall.c  
-static uint64 (*syscalls[])(void) = {
-    [SYS_trace]   sys_trace,
-    // ... other syscall
-};
-```
-
-```c
-// Process structure extension
-
-// kernel/proc.h
-struct proc {
-    // ... other parameters
-    int trace_mask;  // Trace mask - new field
-};
-```
-
-## 实现步骤
-
-sys_trace 函数
-```c
-// kernel/sysproc.c
-uint64 sys_trace(void) {
-    int mask;
-    if(argint(0, &mask) < 0)  // Get mask parameter from user space
-        return -1;
-    
-    struct proc *p = myproc();
-    p->trace_mask = mask;     // Set process trace mask
-    return 0;
-}
-```
-
-fork 继承
-```c
-// kernel/proc.c - fork()函数中
-np->trace_mask = p->trace_mask;  // Child process inherits parent's trace_mask
-```
-
-系统调用跟踪
-```c
-// kernel/syscall.c
-void syscall(void) {
-    int num = p->trapframe->a7;  // Get syscall number
-    
-    if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-        p->trapframe->a0 = syscalls[num]();  // Execute syscall
-        
-        // Key: check if tracing is needed
-        if (p->trace_mask & (1 << num)) {
-            printf("%d: syscall %s -> %d\n", 
-                   p->pid, syscall_names[num], p->trapframe->a0);
-        }
-    }
-}
-```
+当我们在用户程序中调用 trace 函数时，执行流首先进入由 usys.S 生成的存根代码。这段代码的任务非常单一且纯粹：将名为 SYS_trace 的系统调用号载入 a7 寄存器，然后触发指令 ecall。此时，硬件电路会接管控制权，将当前特权级提升至内核模式，并跳转到内核预设的异常处理入口。在此过程中，寄存器状态被完整保存在当前进程的 trapframe 中，这一步骤是后续内核提取用户参数的基础。
 
 
-## 完整执行流程
+进入内核态后，核心调度逻辑由 syscall 函数承担。它从 trapframe 中提取 a7 寄存器的数值，并将其作为索引在静态定义的 syscalls 函数指针数组中进行检索。为了实现特定的跟踪功能，我们需要在进程的底层结构体 struct proc 中新增一个整型变量 trace_mask 用于记录掩码。在 sys_trace 内核函数中，我们调用 argint 来读取用户态存放在 a0 寄存器中的参数，并将其写入当前进程的掩码字段。这一机制体现了内核如何通过共享的内存结构来维持特定进程的状态。
 
-`sysproc.c->syctrace()`
-1. 用户程序调用 trace(32)
-2. 通过 usys.S 存根进入内核
-3. syscall()调用 sys_trace()
-4. sys_trace() 设置当前进程 trace_mask = 32
-5. 返回用户程序
 
-`syscall.c->syscall()`
-1. 用户程序调用read()
-2. 通过ecall进入内核syscall()
-3. syscall()执行read()系统调用
-4. 检查: if (32 & (1 << 5)) == true
-5. 打印: "3: syscall read -> 1023"
-6. 返回用户程序
-
+整个机制中最精妙的设计在于父子进程间的继承关系。在 fork 函数执行时，内核必须将父进程的 trace_mask 值精确拷贝给新分配的子进程 np。这确保了当一个外壳程序被跟踪时，其派生的所有子命令都能自动继承这一调试特性。最终，在 syscall 函数执行完毕并即将返回用户态的节点，内核会通过逻辑位运算检查当前系统调用号是否被包含在掩码中。如果判定成功，内核将格式化输出进程 pid、调用名及返回值，从而完成一次透明的运行监控。通过这种方式，我们不仅实现了一个功能，更深刻理解了操作系统如何利用特权级转换来保障系统的安全与稳定。

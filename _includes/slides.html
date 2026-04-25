@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
+<style>
+.reveal{height:500px;font-size:1.8em;margin:1.5em 0;border:1px solid #ddd;position:relative}
+.reveal .slides section{display:block;position:absolute;top:0;left:0;width:100%;padding:20px .8em;box-sizing:border-box}
+.reveal h1,.reveal h2,.reveal h3{margin:0.2em 0}
+.reveal p,.reveal ul,.reveal ol,.reveal li{margin:0.4em 0}
+.reveal .controls .navigate-left.highlight,.reveal .controls .navigate-right.highlight,.reveal .controls .navigate-down.highlight{animation:none!important;opacity:.9}
+</style>
+<div class="reveal"><div class="slides" id="slides-{{ id }}"></div></div>
+<script>
+(function(){
+  var id = "{{ id }}";
+  var src = "{{ include.src }}";
+  var container = document.getElementById('slides-' + id);
+  function init() {
+    if (!window._revealInited) {
+      Reveal.initialize({embedded:true,transition:'none',center:false,plugins:[RevealMarkdown]});
+      window._revealInited = 1;
+    }
+  }
+  {% if include.src %}
+  fetch(src).then(function(r) { return r.text(); }).then(function(t) {
+    var lines = t.split('\n---\n');
+    lines.forEach(function(content) {
+      var section = document.createElement('section');
+      section.setAttribute('data-markdown', '');
+      var textarea = document.createElement('textarea');
+      textarea.setAttribute('data-template', '');
+      textarea.textContent = content.trim();
+      section.appendChild(textarea);
+      container.appendChild(section);
+    });
+    setTimeout(init, 200);
+  }).catch(function(e) { console.error(e); init(); });
+  {% else %}
+  var section = document.createElement('section');
+  section.setAttribute('data-markdown', '');
+  var textarea = document.createElement('textarea');
+  textarea.setAttribute('data-template', '');
+  textarea.textContent = {{ include.content | jsonify }};
+  section.appendChild(textarea);
+  container.appendChild(section);
+  init();
+  {% endif %}
+})();
+</script>

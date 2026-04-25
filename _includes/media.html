@@ -1,0 +1,4 @@
+<video src="{{ include.src }}"
+  {% if include.class %}class="{{ include.class }}"{% endif %}
+  {% if include.width %}style="width: 100%; max-width: {{ include.width }}px;"{% endif %}
+  controls></video>

@@ -10,7 +10,7 @@ phony: true
   {% assign all_folder_tags = "" | split: "," %}
   {% assign all_content_tags = "" | split: "," %}
   {% assign all_items = site['blob'] | sort: 'date' %}
-  
+
   <!-- 收集所有文件夹标签 -->
   {% for doc in all_items %}
     {% if doc.phony != true %}
@@ -28,10 +28,10 @@ phony: true
       {% endif %}
     {% endif %}
   {% endfor %}
-  
+
   {% assign unique_folder_tags = all_folder_tags | uniq | sort %}
   {% assign unique_content_tags = all_content_tags | uniq | sort %}
-  
+
   <li>Year: <span class="folder-tag tag active" data-tag="__all__">All</span>
   {% for tag in unique_folder_tags %}
     | <span class="folder-tag tag" data-tag="{{ tag | strip }}">{{ tag | strip }}</span>
@@ -48,7 +48,7 @@ phony: true
 </ul>
 
 <!-- 列表主体 -->
-<ul id="lecture-list" class="double-spaced">
+<div id="lecture-list" class="double-spaced">
   {% assign lectures = site['blob'] | sort: 'date' | reverse %}
   {% assign current_year = "" %}
   {% for lecture in lectures %}
@@ -56,18 +56,18 @@ phony: true
       {% assign post_year = lecture.date | date: '%Y' %}
       {% if post_year != current_year %}
         {% if current_year != "" %}
-          </ul>
+          </div>  <!-- 关闭上一个年份区块 -->
         {% endif %}
         <h2>{{ post_year }}</h2>
-        <ul>
+        <div class="year-block">
         {% assign current_year = post_year %}
       {% endif %}
-      <!-- 提取文件夹作为标签 -->
+
       {% assign url_parts = lecture.url | split: '/' %}
       {% assign folder_tag = url_parts[2] %}
-      
-      <li data-tags="{{ folder_tag }}{% if lecture.tags %} {{ lecture.tags | join: ' ' }}{% endif %}">
-        <strong>{{ lecture.date | date: '%Y/%m/%d' }}</strong>:
+
+      <div class="lecture-item" data-tags="{{ folder_tag }}{% if lecture.tags %} {{ lecture.tags | join: ' ' }}{% endif %}">
+        {{ lecture.date | date: '%m/%d' }}:
         {% if lecture.ready %}
           <a href="{{ lecture.url }}">{{ lecture.title }}</a>
         {% elsif lecture.noclass %}
@@ -76,22 +76,22 @@ phony: true
           {{ lecture.title }} [coming soon]
         {% endif %}
         {% if lecture.details %}
-          <span style="float:right">{{ lecture.details }}</span>
+          <span class="lecture-details">{{ lecture.details }}</span>
         {% endif %}
-      </li>
+      </div>
     {% endif %}
   {% endfor %}
   {% if current_year != "" %}
-    </ul>
+    </div>  <!-- 关闭最后一个年份区块 -->
   {% endif %}
-</ul>
+</div>
 
 <script>
 // 绑定交互 - 按文件夹和标签过滤
 (function() {
   const folderTags = Array.from(document.querySelectorAll('#folder-tag-list .folder-tag'));
   const contentTags = Array.from(document.querySelectorAll('#folder-tag-list .content-tag'));
-  const items = Array.from(document.querySelectorAll('#lecture-list li'));
+  const items = Array.from(document.querySelectorAll('#lecture-list .lecture-item'));
   const yearHeaders = Array.from(document.querySelectorAll('#lecture-list h2'));
 
   let selectedFolder = '__all__';
@@ -112,10 +112,10 @@ phony: true
 
   function updateYearVisibility() {
     yearHeaders.forEach(h => {
-      const ul = h.nextElementSibling;
-      if (ul && ul.tagName === 'UL') {
-        const visibleLis = Array.from(ul.querySelectorAll('li')).filter(li => li.style.display !== 'none');
-        h.style.display = visibleLis.length > 0 ? '' : 'none';
+      const block = h.nextElementSibling;
+      if (block && block.classList.contains('year-block')) {
+        const visibleItems = Array.from(block.querySelectorAll('.lecture-item')).filter(item => item.style.display !== 'none');
+        h.style.display = visibleItems.length > 0 ? '' : 'none';
       }
     });
   }

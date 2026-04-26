@@ -110,6 +110,8 @@ tr:hover { background: var(--border); color: var(--text); }
 #top-nav a { color: var(--nav-text); text-decoration: none; }
 #top-nav a:hover { color: var(--nav-bg); background-color: var(--nav-text); }
 #menu-icon { display: none; }
+.mobile-current, .menu-label { display: none; }
+.desktop-nav { display: inline; }
 .trigger { display: none; }
 .menu-label::after { content: "(+)"; }
 input[type=checkbox]:checked ~ .trigger { display: block; margin: auto; }
@@ -120,10 +122,12 @@ input[type=checkbox]:checked ~ .menu-label::after { content: "(-)"; }
 
 @media (min-width: 40rem) {
   .menu-label { display: none; }
-  .trigger { display: inline; }
+  .mobile-current, .trigger { display: none !important; }
+  .desktop-nav { display: inline; }
   .trigger-child { display: inline; }
   .nav-link { display: initial; }
   .nav-link::before { content: "| "; }
+  .desktop-nav .nav-link:last-child::after { content: " |"; }
 }
 
 @media (max-width: 480px) {
@@ -140,7 +144,11 @@ input[type=checkbox]:checked ~ .menu-label::after { content: "(-)"; }
   }
 
   /* 2. 第一行元素：手动控制左右间距，取消上下外边距 */
-  #top-nav a, .menu-label {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-current, .menu-label {
     display: inline-block;
     width: auto;
     text-align: center;
@@ -170,6 +178,10 @@ input[type=checkbox]:checked ~ .menu-label::after { content: "(-)"; }
   /* 5. 装饰清理 */
   .nav-link::before {
     content: none !important;
+  }
+
+  .nav-link-mobile.is-current {
+    display: none !important;
   }
 
   /* 6. 交互逻辑 */

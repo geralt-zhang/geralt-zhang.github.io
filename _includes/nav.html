@@ -1,14 +1,30 @@
 <div id="nav-bg">
+  {% assign current_nav_name = "zhehuaf.github.io" %}
+  {% assign current_nav_href = "/" %}
+  {% if page.url == "/about/" %}
+    {% assign current_nav_name = "about" %}
+    {% assign current_nav_href = "/about/" %}
+  {% elsif page.url == "/blob/" or page.url contains "/blob/" %}
+    {% assign current_nav_name = "blob" %}
+    {% assign current_nav_href = "/blob/" %}
+  {% endif %}
   <nav id="top-nav">
     <input type="checkbox" id="menu-icon">
     <label class="menu-label" for="menu-icon"></label>
-    <a href="/about/">about</a>
+    <a class="mobile-current" href="{{ current_nav_href }}">{{ current_nav_name }}</a>
 
     <div class="trigger">
       <div class="trigger-child">
-        <span class="nav-link"><a href="/" id="logo">zhehuaf.github.io</a></span>
-        <span class="nav-link"><a href="/blob/">blob</a></span>
+        <span class="nav-link nav-link-mobile{% if current_nav_href == '/about/' %} is-current{% endif %}"><a href="/about/">about</a></span>
+        <span class="nav-link nav-link-mobile{% if current_nav_href == '/' %} is-current{% endif %}"><a href="/" id="logo-mobile">zhehuaf.github.io</a></span>
+        <span class="nav-link nav-link-mobile{% if current_nav_href == '/blob/' %} is-current{% endif %}"><a href="/blob/">blob</a></span>
       </div>
+    </div>
+
+    <div class="desktop-nav">
+      <span class="nav-link nav-link-desktop"><a href="/about/">about</a></span>
+      <span class="nav-link nav-link-desktop"><a href="/" id="logo">zhehuaf.github.io</a></span>
+      <span class="nav-link nav-link-desktop"><a href="/blob/">blob</a></span>
     </div>
   </nav>
 </div>

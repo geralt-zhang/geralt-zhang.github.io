@@ -22,14 +22,12 @@ layout: default
   }
 
   .navigation a {
-    display: block;
-    flex: 1; /* 双方各占一半空间 */
-    white-space: nowrap; /* 禁止换行 */
-    overflow: hidden; /* 溢出隐藏 */
-    text-overflow: ellipsis; /* 显示省略号 ... */
+    display: inline-flex;
+    align-items: center;
+    max-width: calc(50% - 5px);
     text-decoration: none;
     color: inherit;
-    max-width: 50%; /* 严格限制最大宽度 */
+    min-width: 0;
   }
 
   .navigation .prev {
@@ -38,6 +36,21 @@ layout: default
 
   .navigation .next {
     text-align: right;
+    justify-content: flex-end;
+  }
+
+  .navigation .nav-prefix,
+  .navigation .nav-suffix {
+    flex: 0 0 auto;
+  }
+
+  .navigation .nav-text {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* 适配移动端，如果觉得 50% 太拥挤可以调整间距 */
@@ -60,7 +73,7 @@ layout: default
     {% assign prev_idx = curr_index | minus: 1 %}
     {% for post in sorted_posts %}
       {% if forloop.index == prev_idx %}
-        <a href="{{ post.url }}" class="prev" title="{{ post.title }}">← {{ post.title }}</a>
+        <a href="{{ post.url }}" class="prev" title="{{ post.title }}"><span class="nav-prefix">←&nbsp;</span><span class="nav-text">{{ post.title }}</span></a>
       {% endif %}
     {% endfor %}
   {% else %}
@@ -71,7 +84,7 @@ layout: default
     {% assign next_idx = curr_index | plus: 1 %}
     {% for post in sorted_posts %}
       {% if forloop.index == next_idx %}
-        <a href="{{ post.url }}" class="next" title="{{ post.title }}">{{ post.title }} →</a>
+        <a href="{{ post.url }}" class="next" title="{{ post.title }}"><span class="nav-text">{{ post.title }}</span><span class="nav-suffix">&nbsp;→</span></a>
       {% endif %}
     {% endfor %}
   {% else %}

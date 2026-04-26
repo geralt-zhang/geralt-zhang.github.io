@@ -1,62 +1,130 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-<link rel="stylesheet" id="reveal-theme-{{ include.id }}" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
 
 <style>
-  .reveal-wrapper {
+  .slides-host {
     height: 500px;
-    font-size: 1.8em;
     margin: 1.5em 0;
     border: 1px solid #ddd;
     position: relative;
     overflow: hidden;
   }
-  .reveal-wrapper:focus {
+
+  .slides-host:focus {
     outline: none;
     border-color: #42afe3;
   }
-  /* 适配黑色模式下的容器边框 */
+
   @media (prefers-color-scheme: dark) {
-    .reveal-wrapper { border-color: #444; }
+    .slides-host {
+      border-color: #444;
+    }
   }
-  .reveal .slides section {
-    display: block;
-    padding: 20px 0.8em;
-    box-sizing: border-box;
+
+  .slides-host.loading::before {
+    content: "Loading slides...";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted, #888);
+    font: 14px/1.4 sans-serif;
   }
-  .reveal h1, .reveal h2, .reveal h3 { margin: 0.2em 0; }
-  .reveal p, .reveal ul, .reveal ol, .reveal li { margin: 0.4em 0; }
 </style>
 
-<div class="reveal reveal-wrapper" id="reveal-{{ include.id }}" tabindex="0">
-  <div class="slides" id="slides-{{ include.id }}"></div>
-</div>
+<div class="slides-host loading" id="reveal-{{ include.id }}" tabindex="0"></div>
 
 <script>
-(function(){
+(function() {
   var currentId = "{{ include.id }}";
   var src = "{{ include.src }}";
-  var deckElement = document.getElementById('reveal-' + currentId);
-  var slidesContainer = document.getElementById('slides-' + currentId);
-  var themeLink = document.getElementById('reveal-theme-' + currentId);
+  var host = document.getElementById('reveal-' + currentId);
+  var shadow = host.attachShadow({ mode: 'open' });
+  var revealCssUrl = 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css';
+  var themeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  var deckElement;
+  var deckInstance;
+  var slidesContainer;
 
-  // 2. 主题切换逻辑
-  function updateTheme() {
-    var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var themeName = isDark ? 'black' : 'white';
-    themeLink.href = 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/' + themeName + '.css';
+  function appendStyle(cssText) {
+    var style = document.createElement('style');
+    style.textContent = cssText;
+    shadow.appendChild(style);
   }
 
-  // 监听系统主题变化
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
-  updateTheme(); // 初始化执行一次
+  function loadCssText(url, options) {
+    options = options || {};
+    if (!window.__slidesCssCache) {
+      window.__slidesCssCache = {};
+    }
+    var cacheKey = url + '::' + (options.rewriteThemeRoot ? 'theme-root' : 'plain');
+    if (window.__slidesCssCache[cacheKey]) {
+      return window.__slidesCssCache[cacheKey];
+    }
+    window.__slidesCssCache[cacheKey] = fetch(url).then(function(r) {
+      if (!r.ok) {
+        throw new Error("HTTP " + r.status + " - " + url);
+      }
+      return r.text().then(function(cssText) {
+        var normalizedCss = absolutizeCssUrls(cssText, url);
+        if (options.rewriteThemeRoot) {
+          normalizedCss = normalizedCss.replace(/:root\b/g, ':host');
+        }
+        return normalizedCss;
+      });
+    });
+    return window.__slidesCssCache[cacheKey];
+  }
+
+  function absolutizeCssUrls(cssText, baseUrl) {
+    return cssText.replace(/url\((['"]?)([^)'"]+)\1\)/g, function(match, quote, assetUrl) {
+      if (/^(data:|https?:|#|\/)/.test(assetUrl)) {
+        return match;
+      }
+      return 'url("' + new URL(assetUrl, baseUrl).href + '")';
+    });
+  }
+
+  function mountShell() {
+    var viewportElement = document.createElement('div');
+    viewportElement.className = 'reveal-viewport';
+    deckElement = document.createElement('div');
+    deckElement.className = 'reveal';
+    slidesContainer = document.createElement('div');
+    slidesContainer.className = 'slides';
+    deckElement.appendChild(slidesContainer);
+    viewportElement.appendChild(deckElement);
+    shadow.appendChild(viewportElement);
+  }
+
+  function getThemeCssUrl() {
+    var themeName = themeMedia.matches ? 'black' : "{{ include.theme | default: 'white' }}";
+    return 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/' + themeName + '.css';
+  }
+
+  function getDeckSize() {
+    var hostWidth = Math.max(host.clientWidth || 0, 320);
+    var hostHeight = Math.max(host.clientHeight || 0, 320);
+    var width = Math.max(360, Math.round(hostWidth - 32));
+    var height = Math.max(320, Math.round(hostHeight - 32));
+
+    return {
+      width: width,
+      height: height
+    };
+  }
 
   function initInstance() {
-    var deck = new Reveal(deckElement, {
+    var size = getDeckSize();
+
+    deckInstance = new Reveal(deckElement, {
       embedded: true,
       transition: 'none',
       center: false,
+      width: size.width,
+      height: size.height,
+      margin: 0,
       hash: false,
       history: false,
       keyboard: false,
@@ -64,52 +132,153 @@
       plugins: [RevealMarkdown]
     });
 
-    deck.initialize().then(function() {
-      deckElement.addEventListener('keydown', function(e) {
-        if (document.activeElement === deckElement) {
-          if (e.keyCode === 39) { // Right
-            e.preventDefault();
-            deck.next();
-          } else if (e.keyCode === 37) { // Left
-            e.preventDefault();
-            deck.prev();
-          }
+    deckInstance.initialize().then(function() {
+      normalizeSlides();
+      host.classList.remove('loading');
+      host.addEventListener('keydown', function(e) {
+        if (document.activeElement !== host) {
+          return;
+        }
+
+        if (e.keyCode === 39) {
+          e.preventDefault();
+          deckInstance.next();
+        } else if (e.keyCode === 37) {
+          e.preventDefault();
+          deckInstance.prev();
         }
       });
     });
   }
 
-  {% if include.src %}
-  fetch(src)
-    .then(function(r) {
-      if (!r.ok) throw new Error("HTTP " + r.status + " - " + src);
-      return r.text();
-    })
-    .then(function(t) {
-      var lines = t.split('\n---\n');
-      lines.forEach(function(content) {
-        var section = document.createElement('section');
-        section.setAttribute('data-markdown', '');
-        var textarea = document.createElement('textarea');
-        textarea.setAttribute('data-template', '');
-        textarea.textContent = content.trim();
-        section.appendChild(textarea);
-        slidesContainer.appendChild(section);
-      });
-      setTimeout(initInstance, 100);
-    })
-    .catch(function(e) {
-      console.error("Reveal Error (ID: " + currentId + "):", e);
+  function normalizeSlides() {
+    Array.prototype.forEach.call(slidesContainer.children, function(section) {
+      if (section.querySelector(':scope > .slide-body')) {
+        return;
+      }
+
+      var first = section.firstElementChild;
+      var body;
+      var node;
+
+      if (!first || !/^H[1-3]$/.test(first.tagName)) {
+        return;
+      }
+
+      section.classList.add('has-slide-title');
+      body = document.createElement('div');
+      body.className = 'slide-body';
+      node = first.nextSibling;
+
+      while (node) {
+        var next = node.nextSibling;
+        body.appendChild(node);
+        node = next;
+      }
+
+      section.appendChild(body);
     });
+  }
+
+  function syncLayout() {
+    if (!deckInstance) {
+      return;
+    }
+
+    var size = getDeckSize();
+    deckInstance.configure({
+      width: size.width,
+      height: size.height
+    });
+    deckInstance.layout();
+    normalizeSlides();
+  }
+
+  function bootstrap() {
+    Promise.all([
+      loadCssText(revealCssUrl),
+      loadCssText(getThemeCssUrl(), { rewriteThemeRoot: true })
+    ])
+      .then(function(cssParts) {
+        appendStyle(cssParts[0]);
+        appendStyle(cssParts[1]);
+        appendStyle([
+          ':host { display: block; height: 100%; }',
+          '.reveal-viewport { width: 100%; height: 100%; }',
+          '.reveal { width: 100%; height: 100%; }',
+          ':host { --r-main-font-size: 22px; --r-heading1-size: 1.9em; --r-heading2-size: 1.35em; --r-heading3-size: 1.1em; --r-block-margin: 12px; }',
+          '.reveal .slides { text-align: left; }',
+          '.reveal .slides section { box-sizing: border-box; height: 100%; padding: 0.7em 0.95em 0.85em; overflow-y: auto; overflow-x: hidden; }',
+          '.reveal .slides section > :first-child { margin-top: 0; }',
+          '.reveal .slides section.has-slide-title { display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }',
+          '.reveal .slides section.has-slide-title > h1:first-child, .reveal .slides section.has-slide-title > h2:first-child, .reveal .slides section.has-slide-title > h3:first-child { margin: 0 0 0.22em; min-height: 1.8em; line-height: 1.05; }',
+          '.reveal .slides section.has-slide-title > .slide-body { min-height: 0; overflow-y: auto; overflow-x: hidden; padding-right: 0.15em; }',
+          '.reveal .slides section.has-slide-title > .slide-body > :first-child { margin-top: 0; }',
+          '.reveal .slides section ul, .reveal .slides section ol { display: block; margin: 0 0 var(--r-block-margin) 0; padding-left: 0; list-style-position: inside; }',
+          '.reveal .slides section ul ul, .reveal .slides section ul ol, .reveal .slides section ol ul, .reveal .slides section ol ol { margin-left: 0; }',
+          '.reveal .slides section p, .reveal .slides section li, .reveal .slides section blockquote, .reveal .slides section td, .reveal .slides section th, .reveal .slides section code { overflow-wrap: anywhere; }',
+          '.reveal .slides section pre { width: 100%; margin: 0.25em 0 0.5em; font-size: 0.62em; overflow: auto; }',
+          '@media (max-width: 560px) { :host { --r-main-font-size: 20px; --r-heading1-size: 1.7em; --r-heading2-size: 1.25em; --r-heading3-size: 1.02em; } }'
+        ].join('\n'));
+        mountShell();
+        loadSlides();
+      })
+      .catch(function(e) {
+        host.classList.remove('loading');
+        console.error("Reveal CSS Error (ID: " + currentId + "):", e);
+      });
+  }
+
+  function loadSlides() {
+  {% if include.src %}
+    fetch(src)
+      .then(function(r) {
+        if (!r.ok) {
+          throw new Error("HTTP " + r.status + " - " + src);
+        }
+        return r.text();
+      })
+      .then(function(t) {
+        var lines = t.split('\n---\n');
+        lines.forEach(function(content) {
+          var section = document.createElement('section');
+          section.setAttribute('data-markdown', '');
+          var textarea = document.createElement('textarea');
+          textarea.setAttribute('data-template', '');
+          textarea.textContent = content.trim();
+          section.appendChild(textarea);
+          slidesContainer.appendChild(section);
+        });
+        setTimeout(initInstance, 100);
+      })
+      .catch(function(e) {
+        host.classList.remove('loading');
+        console.error("Reveal Error (ID: " + currentId + "):", e);
+      });
   {% else %}
-  var section = document.createElement('section');
-  section.setAttribute('data-markdown', '');
-  var textarea = document.createElement('textarea');
-  textarea.setAttribute('data-template', '');
-  textarea.textContent = {{ include.content | jsonify }};
-  section.appendChild(textarea);
-  slidesContainer.appendChild(section);
-  initInstance();
+    var section = document.createElement('section');
+    section.setAttribute('data-markdown', '');
+    var textarea = document.createElement('textarea');
+    textarea.setAttribute('data-template', '');
+    textarea.textContent = {{ include.content | jsonify }};
+    section.appendChild(textarea);
+    slidesContainer.appendChild(section);
+    initInstance();
   {% endif %}
+  }
+
+  themeMedia.addEventListener('change', function() {
+    host.classList.add('loading');
+    while (shadow.firstChild) {
+      shadow.removeChild(shadow.firstChild);
+    }
+    deckElement = null;
+    deckInstance = null;
+    slidesContainer = null;
+    bootstrap();
+  });
+
+  window.addEventListener('resize', syncLayout);
+  bootstrap();
 })();
 </script>

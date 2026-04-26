@@ -153,30 +153,30 @@
 
   function normalizeSlides() {
     Array.prototype.forEach.call(slidesContainer.children, function(section) {
-      if (section.querySelector(':scope > .slide-body')) {
-        return;
-      }
-
       var first = section.firstElementChild;
-      var body;
+      var body = section.querySelector(':scope > .slide-body');
       var node;
 
       if (!first || !/^H[1-3]$/.test(first.tagName)) {
         return;
       }
 
-      section.classList.add('has-slide-title');
-      body = document.createElement('div');
-      body.className = 'slide-body';
-      node = first.nextSibling;
+      if (!body) {
+        section.classList.add('has-slide-title');
+        body = document.createElement('div');
+        body.className = 'slide-body';
+        node = first.nextSibling;
 
-      while (node) {
-        var next = node.nextSibling;
-        body.appendChild(node);
-        node = next;
+        while (node) {
+          var next = node.nextSibling;
+          body.appendChild(node);
+          node = next;
+        }
+
+        section.appendChild(body);
       }
 
-      section.appendChild(body);
+      section.style.setProperty('--slide-title-height', Math.ceil(first.getBoundingClientRect().height + 8) + 'px');
     });
   }
 
@@ -210,9 +210,9 @@
           '.reveal .slides { text-align: left; }',
           '.reveal .slides section { box-sizing: border-box; height: 100%; padding: 0.7em 0.95em 0.85em; overflow-y: auto; overflow-x: hidden; }',
           '.reveal .slides section > :first-child { margin-top: 0; }',
-          '.reveal .slides section.has-slide-title { display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }',
+          '.reveal .slides section.has-slide-title { overflow: hidden; }',
           '.reveal .slides section.has-slide-title > h1:first-child, .reveal .slides section.has-slide-title > h2:first-child, .reveal .slides section.has-slide-title > h3:first-child { margin: 0 0 0.22em; min-height: 1.8em; line-height: 1.05; }',
-          '.reveal .slides section.has-slide-title > .slide-body { min-height: 0; overflow-y: auto; overflow-x: hidden; padding-right: 0.15em; }',
+          '.reveal .slides section.has-slide-title > .slide-body { height: calc(100% - var(--slide-title-height, 0px)); overflow-y: auto; overflow-x: hidden; padding-right: 0.15em; }',
           '.reveal .slides section.has-slide-title > .slide-body > :first-child { margin-top: 0; }',
           '.reveal .slides section ul, .reveal .slides section ol { display: block; margin: 0 0 var(--r-block-margin) 0; padding-left: 0; list-style-position: inside; }',
           '.reveal .slides section ul ul, .reveal .slides section ul ol, .reveal .slides section ol ul, .reveal .slides section ol ol { margin-left: 0; }',

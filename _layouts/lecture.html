@@ -11,6 +11,41 @@ layout: default
 
 {{ content }}
 
+<style>
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 2em 0;
+    gap: 10px; /* 左右之间的间距 */
+  }
+
+  .navigation a {
+    display: block;
+    flex: 1; /* 双方各占一半空间 */
+    white-space: nowrap; /* 禁止换行 */
+    overflow: hidden; /* 溢出隐藏 */
+    text-overflow: ellipsis; /* 显示省略号 ... */
+    text-decoration: none;
+    color: inherit;
+    max-width: 50%; /* 严格限制最大宽度 */
+  }
+
+  .navigation .prev {
+    text-align: left;
+  }
+
+  .navigation .next {
+    text-align: right;
+  }
+
+  /* 适配移动端，如果觉得 50% 太拥挤可以调整间距 */
+  @media (max-width: 480px) {
+    .navigation { font-size: 0.9em; }
+  }
+</style>
+
 <div class="navigation">
   {% assign sorted_posts = site.blob | where_exp: "post", "post.date" | sort: "date" %}
   {% assign curr_index = -1 %}
@@ -25,18 +60,22 @@ layout: default
     {% assign prev_idx = curr_index | minus: 1 %}
     {% for post in sorted_posts %}
       {% if forloop.index == prev_idx %}
-        <a href="{{ post.url }}" class="prev">← 上一篇: {{ post.title }}</a>
+        <a href="{{ post.url }}" class="prev" title="{{ post.title }}">← {{ post.title }}</a>
       {% endif %}
     {% endfor %}
+  {% else %}
+    <div style="flex:1;"></div>
   {% endif %}
 
   {% if curr_index > 0 and curr_index < sorted_posts.size %}
     {% assign next_idx = curr_index | plus: 1 %}
     {% for post in sorted_posts %}
       {% if forloop.index == next_idx %}
-        <a href="{{ post.url }}" class="next">下一篇: {{ post.title }} →</a>
+        <a href="{{ post.url }}" class="next" title="{{ post.title }}">{{ post.title }} →</a>
       {% endif %}
     {% endfor %}
+  {% else %}
+    <div style="flex:1;"></div>
   {% endif %}
 </div>
 

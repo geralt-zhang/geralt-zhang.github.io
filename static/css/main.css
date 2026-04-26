@@ -128,10 +128,54 @@ input[type=checkbox]:checked ~ .menu-label::after { content: "(-)"; }
 
 @media (max-width: 480px) {
   html { font-size: 14pt; }
-  #top-nav { display: flex; justify-content: center; flex-wrap: wrap; }
-  #top-nav a { display: block; width: 100%; text-align: center; }
-  .nav-link { display: inline !important; }
-  .nav-link::before { content: normal !important; }
+
+  /* 1. 容器：取消 gap，防止第一行与下方产生额外间距 */
+  #top-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    padding: 5px 0;
+  }
+
+  /* 2. 第一行元素：手动控制左右间距，取消上下外边距 */
+  #top-nav a, .menu-label {
+    display: inline-block;
+    width: auto;
+    text-align: center;
+    margin: 0 8px; /* 仅保留左右间距 */
+    padding: 4px 0; /* 这里的 padding 决定了第一行的高度感 */
+  }
+
+  /* 3. 展开容器：彻底清空边距 */
+  .trigger {
+    display: none;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 4. 导航链接：通过 padding 统一控制每一行的间距 */
+  .nav-link {
+    display: block !important;
+    width: 100%;
+    margin: 0; /* 取消外边距 */
+    padding: 4px 0; /* 这里的 padding 必须与上方一致，实现等距 */
+    line-height: 1;
+    text-align: center;
+  }
+
+  /* 5. 装饰清理 */
+  .nav-link::before {
+    content: none !important;
+  }
+
+  /* 6. 交互逻辑 */
+  input[type=checkbox]:checked ~ .trigger {
+    display: block;
+  }
 }
 
 .title { font-size: 1.4rem; }
@@ -141,8 +185,8 @@ input[type=checkbox]:checked ~ .menu-label::after { content: "(-)"; }
 .gap { margin: 4rem 0; }
 .accent { color: var(--accent); }
 
-#folder-tag-list { margin-bottom: 1em; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5em; justify-content: center; }
-#folder-tag-list li { margin-bottom: 1em; }
+#folder-tag-list { margin-bottom: 0em; list-style: none; display: flex; flex-wrap: wrap; gap: 0.5em; justify-content: center; }
+#folder-tag-list li { margin-bottom: 0em; width: 100%; text-align: center; }
 #folder-tag-list .tag { cursor: pointer; color: var(--muted); transition: 0.2s; }
 #folder-tag-list .tag.active { color: var(--main); }
 

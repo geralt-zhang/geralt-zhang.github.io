@@ -1,40 +1,106 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
+<link rel="stylesheet" id="reveal-theme-{{ include.id }}" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/markdown/markdown.js"></script>
+
 <style>
-.reveal{height:500px;font-size:1.8em;margin:1.5em 0;border:1px solid #ddd;position:relative}
-.reveal .slides section{display:block;position:absolute;top:0;left:0;width:100%;padding:20px .8em;box-sizing:border-box}
-.reveal h1,.reveal h2,.reveal h3{margin:0.2em 0}
-.reveal p,.reveal ul,.reveal ol,.reveal li{margin:0.4em 0}
-.reveal .controls .navigate-left.highlight,.reveal .controls .navigate-right.highlight,.reveal .controls .navigate-down.highlight{animation:none!important;opacity:.9}
+  .reveal-wrapper {
+    height: 500px;
+    font-size: 1.8em;
+    margin: 1.5em 0;
+    border: 1px solid #ddd;
+    position: relative;
+    overflow: hidden;
+  }
+  .reveal-wrapper:focus {
+    outline: none;
+    border-color: #42afe3;
+  }
+  /* 适配黑色模式下的容器边框 */
+  @media (prefers-color-scheme: dark) {
+    .reveal-wrapper { border-color: #444; }
+  }
+  .reveal .slides section {
+    display: block;
+    padding: 20px 0.8em;
+    box-sizing: border-box;
+  }
+  .reveal h1, .reveal h2, .reveal h3 { margin: 0.2em 0; }
+  .reveal p, .reveal ul, .reveal ol, .reveal li { margin: 0.4em 0; }
 </style>
-<div class="reveal"><div class="slides" id="slides-{{ id }}"></div></div>
+
+<div class="reveal reveal-wrapper" id="reveal-{{ include.id }}" tabindex="0">
+  <div class="slides" id="slides-{{ include.id }}"></div>
+</div>
+
 <script>
 (function(){
-  var id = "{{ id }}";
+  var currentId = "{{ include.id }}";
   var src = "{{ include.src }}";
-  var container = document.getElementById('slides-' + id);
-  function init() {
-    if (!window._revealInited) {
-      Reveal.initialize({embedded:true,transition:'none',center:false,plugins:[RevealMarkdown]});
-      window._revealInited = 1;
-    }
+  var deckElement = document.getElementById('reveal-' + currentId);
+  var slidesContainer = document.getElementById('slides-' + currentId);
+  var themeLink = document.getElementById('reveal-theme-' + currentId);
+
+  // 2. 主题切换逻辑
+  function updateTheme() {
+    var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var themeName = isDark ? 'black' : 'white';
+    themeLink.href = 'https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/' + themeName + '.css';
   }
-  {% if include.src %}
-  fetch(src).then(function(r) { return r.text(); }).then(function(t) {
-    var lines = t.split('\n---\n');
-    lines.forEach(function(content) {
-      var section = document.createElement('section');
-      section.setAttribute('data-markdown', '');
-      var textarea = document.createElement('textarea');
-      textarea.setAttribute('data-template', '');
-      textarea.textContent = content.trim();
-      section.appendChild(textarea);
-      container.appendChild(section);
+
+  // 监听系统主题变化
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+  updateTheme(); // 初始化执行一次
+
+  function initInstance() {
+    var deck = new Reveal(deckElement, {
+      embedded: true,
+      transition: 'none',
+      center: false,
+      hash: false,
+      history: false,
+      keyboard: false,
+      focus: false,
+      plugins: [RevealMarkdown]
     });
-    setTimeout(init, 200);
-  }).catch(function(e) { console.error(e); init(); });
+
+    deck.initialize().then(function() {
+      deckElement.addEventListener('keydown', function(e) {
+        if (document.activeElement === deckElement) {
+          if (e.keyCode === 39) { // Right
+            e.preventDefault();
+            deck.next();
+          } else if (e.keyCode === 37) { // Left
+            e.preventDefault();
+            deck.prev();
+          }
+        }
+      });
+    });
+  }
+
+  {% if include.src %}
+  fetch(src)
+    .then(function(r) {
+      if (!r.ok) throw new Error("HTTP " + r.status + " - " + src);
+      return r.text();
+    })
+    .then(function(t) {
+      var lines = t.split('\n---\n');
+      lines.forEach(function(content) {
+        var section = document.createElement('section');
+        section.setAttribute('data-markdown', '');
+        var textarea = document.createElement('textarea');
+        textarea.setAttribute('data-template', '');
+        textarea.textContent = content.trim();
+        section.appendChild(textarea);
+        slidesContainer.appendChild(section);
+      });
+      setTimeout(initInstance, 100);
+    })
+    .catch(function(e) {
+      console.error("Reveal Error (ID: " + currentId + "):", e);
+    });
   {% else %}
   var section = document.createElement('section');
   section.setAttribute('data-markdown', '');
@@ -42,8 +108,8 @@
   textarea.setAttribute('data-template', '');
   textarea.textContent = {{ include.content | jsonify }};
   section.appendChild(textarea);
-  container.appendChild(section);
-  init();
+  slidesContainer.appendChild(section);
+  initInstance();
   {% endif %}
 })();
 </script>

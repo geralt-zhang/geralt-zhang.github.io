@@ -8,7 +8,8 @@ layout: default
 <ul id="folder-tag-list">
   {% assign all_folder_tags = "" | split: "," %}
   {% assign all_content_tags = "" | split: "," %}
-  {% assign all_items = site['blob'] | sort: 'date' %}
+  {% assign visible_blob = site['blob'] | where_exp: "doc", "doc.ready != false" %}
+  {% assign all_items = visible_blob | sort: 'date' %}
 
   <!-- 收集所有文件夹标签 -->
   {% for doc in all_items %}
@@ -48,7 +49,7 @@ layout: default
 
 <!-- 列表主体 -->
 <div id="lecture-list" class="double-spaced">
-  {% assign lectures = site['blob'] | sort: 'date' | reverse %}
+  {% assign lectures = visible_blob | sort: 'date' | reverse %}
   {% assign current_year = "" %}
   {% for lecture in lectures %}
     {% if lecture.phony != true %}
@@ -65,26 +66,13 @@ layout: default
       {% assign url_parts = lecture.url | split: '/' %}
       {% assign folder_tag = url_parts[2] %}
 
-      {% assign show_item = false %}
-      {% if lecture.ready %}
-        {% assign show_item = true %}
-      {% elsif lecture.noclass %}
-        {% assign show_item = true %}
-      {% endif %}
-
-      {% if show_item %}
       <div class="lecture-item" data-tags="{{ folder_tag }}{% if lecture.tags %} {{ lecture.tags | join: ' ' }}{% endif %}">
         {{ lecture.date | date: '%m/%d' }}:
-        {% if lecture.ready %}
-          <a href="{{ lecture.url }}">{{ lecture.title }}</a>
-        {% else %}
-          {{ lecture.title }} [no class]
-        {% endif %}
+        <a href="{{ lecture.url }}">{{ lecture.title }}</a>
         {% if lecture.details %}
           <span class="lecture-details">{{ lecture.details }}</span>
         {% endif %}
       </div>
-      {% endif %}
     {% endif %}
   {% endfor %}
   {% if current_year != "" %}

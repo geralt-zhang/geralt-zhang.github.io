@@ -14,6 +14,3 @@ syncdate: 2026-04-19
 这是我第三次来尝试 Vim 了，去年进入工作接到的任务让我对 Git 的原理已经熟悉了很多，对 NeoVim 的摸索也在这一年来不断持续，昨天终于耐心读完了 kickstart，并且配置好了 SSH 和本地的剪贴板，我有预感，这次我会用的久一些。
 
 {% include slides.html id="nvim" src="/static/slides/nvim.md" %}
-
-
-{% include slides.html id="gemina" src="/static/slides/gemina.md" %}

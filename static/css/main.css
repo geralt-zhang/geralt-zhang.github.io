@@ -49,9 +49,9 @@ em { font-style: italic; }
 a { color: var(--main); text-decoration: underline; transition: all 0.3s ease; }
 a:hover { color: var(--hover-text); background-color: var(--hover-bg); }
 
-code { color: var(--accent); font-size: 90%; font-family: "DM Mono"; }
+code { color: var(--accent); font-size: 95%; font-family: "DM Mono"; }
 
-pre { display: grid; grid-template-columns: 1fr auto; color: var(--text); margin: 1rem 0; padding: 1rem; border: 1px dashed var(--border); font-size: 90%; align-items: start; }
+pre { display: grid; grid-template-columns: 1fr auto; color: var(--text); margin: 1rem 0; padding: 1rem; border: 1px dashed var(--border); font-size: 95%; align-items: start; }
 pre code { grid-column: 1; overflow-x: auto; max-width: 100%; color: inherit; background: none; padding: 0; scrollbar-width: none; -ms-overflow-style: none; }
 pre code::-webkit-scrollbar { display: none; }
 

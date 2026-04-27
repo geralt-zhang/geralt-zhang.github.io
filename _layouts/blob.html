@@ -65,19 +65,26 @@ layout: default
       {% assign url_parts = lecture.url | split: '/' %}
       {% assign folder_tag = url_parts[2] %}
 
+      {% assign show_item = false %}
+      {% if lecture.ready %}
+        {% assign show_item = true %}
+      {% elsif lecture.noclass %}
+        {% assign show_item = true %}
+      {% endif %}
+
+      {% if show_item %}
       <div class="lecture-item" data-tags="{{ folder_tag }}{% if lecture.tags %} {{ lecture.tags | join: ' ' }}{% endif %}">
         {{ lecture.date | date: '%m/%d' }}:
         {% if lecture.ready %}
           <a href="{{ lecture.url }}">{{ lecture.title }}</a>
-        {% elsif lecture.noclass %}
-          {{ lecture.title }} [no class]
         {% else %}
-          {{ lecture.title }} [coming soon]
+          {{ lecture.title }} [no class]
         {% endif %}
         {% if lecture.details %}
           <span class="lecture-details">{{ lecture.details }}</span>
         {% endif %}
       </div>
+      {% endif %}
     {% endif %}
   {% endfor %}
   {% if current_year != "" %}

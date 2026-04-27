@@ -2,7 +2,7 @@
 layout: lecture
 title: "从 ALU 开始"
 date: 2026-02-14
-ready: true
+ready: false
 sync: true
 syncdate: 2026-02-14
 ---

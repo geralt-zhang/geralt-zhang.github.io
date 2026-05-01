@@ -2,7 +2,7 @@
 layout: lecture
 title: "Gcov 近期使用总结"
 date: 2026-02-02
-ready: true
+ready: false
 ---
 
 ## 覆盖率工具的两个关键细节

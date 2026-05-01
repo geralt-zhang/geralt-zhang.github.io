@@ -2,7 +2,7 @@
 layout: lecture
 title: "Steam Deck无声问题"
 date: 2026-04-07
-ready: true
+ready: false
 sync: true
 tags: ["Linux"]
 ---
